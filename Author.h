@@ -11,7 +11,7 @@ public:
 
     //setters/getters
     string getName() const;
-    void setName(string newName);
+    void setName(const string newName);
 };
 
 #include "Author.cpp"

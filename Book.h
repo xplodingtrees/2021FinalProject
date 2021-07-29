@@ -36,18 +36,18 @@ public:
     friend ostream& operator<<(ostream& out, const Book &book);
 
     //setters/getters
-    string getTitle();
-    int getIsbn();
-    string getPubDate();
-    string getPublisher();
-    int getPages();
-    bool getIsAvailable();
-    void setTitle(string newTitle);
-    void setIsbn(int newIsbn);
-    void setPubDate(string newPubDate);
-    void setPublisher(string newPublisher);
-    void setPages(int newPages);
-    void setIsAvailable(bool status);
+    string getTitle() const;
+    int getIsbn() const;
+    string getPubDate() const;
+    string getPublisher() const;
+    int getPages() const;
+    bool getIsAvailable() const;
+    void setTitle(const string newTitle);
+    void setIsbn(const int newIsbn);
+    void setPubDate(const string newPubDate);
+    void setPublisher(const string newPublisher);
+    void setPages(const int newPages);
+    void setIsAvailable(const bool status);
 };
 
 #include "Book.cpp"

@@ -17,10 +17,9 @@ public:
     string getName() const;
     string getAddress() const;
     string getPhoneNum() const;
-    void setName(string newName);
-    void setAddress(string newAddress);
-    void setPhoneNum(string newPhoneNum);
-
+    void setName(const string newName);
+    void setAddress(const string newAddress);
+    void setPhoneNum(const string newPhoneNum);
 };
 
 #include "Patron.cpp"
