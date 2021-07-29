@@ -7,6 +7,7 @@
 #include "BinaryNodeTree.h"
 #include "NotFoundException.h"
 #include "PrecondViolatedExcep.h"
+
 #include "Comparator.h"
 
 using namespace std;
@@ -21,6 +22,7 @@ private:
      * node. This allows us to use pointers to objects while comparing the object's data!!!
      * otherwise, we will be comparing the pointers memory address, and we don't want that.
      */
+
     shared_ptr<Comparator<ItemType>> aComparator;
 
 protected:
