@@ -41,7 +41,40 @@ int printMenu(){
 }
 
 int getValidOption(){
+    return 1;
+}
 
+int test(){
+    shared_ptr<Library> test = make_shared<Library>();
+
+    string directory;
+    cout << "Enter the absolute library data file path (do not include filename):";
+
+    cin >> directory;
+    //directory = "C:\\Users\\ocelo\\Desktop\\Library";
+    cout << endl;
+
+    //check if windows/linux, then append filename to given directory string
+    if(directory.substr(1,1) == ":"){
+        //if last char is a separator, remove it
+        if(directory.substr(directory.length()-1,directory.length()) == "\\"){
+            directory = directory.substr(0, directory.length()-1);
+        }
+        //add filename to directory
+        directory = directory + "\\libraryData";
+    }
+    else{
+        //check if windows/linux, then append filename to given directory string
+        if(directory.substr(directory.length()-1,directory.length()) == "/"){
+            directory = directory.substr(0, directory.length()-1);
+        }
+        //add filename to directory
+        directory = directory + "/libraryData";
+    }
+
+    test->save(directory);
+    test->load(directory);
+    return 0;
 }
 
 int main(){

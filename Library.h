@@ -8,16 +8,22 @@
 #include "LinkedList.h"
 #include "LinkedStack.h"
 
+#include "fstream"
+#include "filesystem"
+#include "iostream"
+
 using namespace std;
 
 class Library {
 private:
+/*
     unique_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
     unique_ptr<LinkedList<shared_ptr<Patron>>> patrons;
     unique_ptr<LinkedList<shared_ptr<Book>>> books;
     unique_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable;
     unique_ptr<LinkedList<shared_ptr<Book>>> booksAvailable;
     unique_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
+*/
 
 
     string name;
@@ -29,10 +35,12 @@ public:
     Library(const string &name,const string &address,const string &hours);
     ~Library();
 
+/*
     LinkedList<Book> availableBooks();
     LinkedList<Book> checkedBooks();
     LinkedList<Patron> registeredPatrons();
     vector<Book> searchBooks(string searchTerm);
+*/
 
     //main methods
     /**
@@ -40,7 +48,7 @@ public:
     * @param aBook
     * @return true if book added successfully, false if not
     */
-    bool addBook(Book aBook);
+    //bool addBook(Book aBook);
 
     /**
     * Removes a book from the list and index
@@ -92,13 +100,13 @@ public:
     * Loads library data from file
     * @param fileName
     */
-    void load(string fileName);
+    void load(string directory);
 
     /**
     * Saves library data to file
     * @param fileName
     */
-    void save(string fileName);
+    void save(string directory);
 
     //setters/getters
     string getName() const;
