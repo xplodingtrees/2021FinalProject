@@ -59,7 +59,7 @@ int main(){
                 break;
             case 4: // remove book by title
                 break;
-            case 5: // seach book
+            case 5: // search book
                 break;
             case 6: // add patron
                 break;
