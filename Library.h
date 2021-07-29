@@ -1,10 +1,11 @@
-#ifndef INC_2021FINALPROJECT_LIBRARY_H
-#define INC_2021FINALPROJECT_LIBRARY_H
+#ifndef LIBRARY_H
+#define LIBRARY_H
 
 
 class Library {
 
 };
 
+#include "Library.cpp"
 
-#endif //INC_2021FINALPROJECT_LIBRARY_H
+#endif //LIBRARY_H
