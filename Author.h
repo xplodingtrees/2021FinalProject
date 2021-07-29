@@ -7,7 +7,7 @@ private:
 
 public:
     Author();
-    ~Author();
+    Author(string authName);
 
     //setters/getters
     string getName() const;
