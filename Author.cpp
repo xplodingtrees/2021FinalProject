@@ -7,7 +7,7 @@ Author::Author(string authName) : name(authName) {
 }
 
 
-void Author::setName(const string newName) {
+void Author::setName(const string &newName) {
 name = newName;
 }
 

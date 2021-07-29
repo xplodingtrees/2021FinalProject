@@ -45,9 +45,9 @@ public:
     string getName() const;
     string getAddress() const;
     string getHours() const;
-    void setName(const string newName);
-    void setAddress(const string newAddress);
-    void setHours(const string newHours);
+    void setName(const string &newName);
+    void setAddress(const string &newAddress);
+    void setHours(const string &newHours);
 };
 
 #include "Library.cpp"

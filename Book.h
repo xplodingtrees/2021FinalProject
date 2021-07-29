@@ -42,12 +42,12 @@ public:
     string getPublisher() const;
     int getPages() const;
     bool getIsAvailable() const;
-    void setTitle(const string newTitle);
-    void setIsbn(const int newIsbn);
-    void setPubDate(const string newPubDate);
-    void setPublisher(const string newPublisher);
-    void setPages(const int newPages);
-    void setIsAvailable(const bool status);
+    void setTitle(const string &newTitle);
+    void setIsbn(const int &newIsbn);
+    void setPubDate(const string &newPubDate);
+    void setPublisher(const string &newPublisher);
+    void setPages(const int &newPages);
+    void setIsAvailable(const bool &status);
 };
 
 #include "Book.cpp"
