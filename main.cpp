@@ -46,8 +46,7 @@ int getValidOption(){
 
 int main(){
     int option = 0;
-    string searchMovie;
-    string pattern;
+
     while (option>=0){
         option = printMenu();
         switch (option) {
