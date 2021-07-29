@@ -51,7 +51,7 @@ public:
     * @param name
     * @param address
     * @param phoneNum
-    * @return true if book removed successfully, false if not
+    * @return true if patron was added successfully, false if not
     */
     bool addPatron(string name, string address, string phoneNum);
 
@@ -59,7 +59,7 @@ public:
     * Removes a book from available books list and adds it to the list of checked out books
     * @param phoneNum
     * @param bookTitle
-    * @return true if book checked out successfully, false if not
+    * @return true if book was checked out successfully, false if not
     */
     bool checkOutBook(string phoneNum, string bookTitle);
 
