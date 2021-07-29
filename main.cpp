@@ -1,6 +1,8 @@
-#include "main.h"
+#include "iostream"
+
+using namespace std;
 
 int main(){
-    cout << "" << endl;
+    cout << "c" << endl;
     return 0;
 }
