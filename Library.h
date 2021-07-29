@@ -8,6 +8,8 @@
 #include "LinkedList.h"
 #include "LinkedStack.h"
 
+using namespace std;
+
 class Library {
 private:
     unique_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
@@ -16,6 +18,7 @@ private:
     unique_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable;
     unique_ptr<LinkedList<shared_ptr<Book>>> booksAvailable;
     unique_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
+
 
     string name;
     string address;

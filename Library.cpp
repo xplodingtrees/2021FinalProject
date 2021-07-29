@@ -1,29 +1,25 @@
 #include "Library.h"
+#include "memory"
+
+using namespace std;
 
 Library::Library(){}
 
-Library::Library(const string &name,const string &address,const string &hours)
-        : name(name), address(address), hours(hours){ //, patrons(LinkedList<shared_ptr<Patron>>()) {
+Library::Library(const string &name, const string &address, const string &hours)
+        : name(name), address(address), hours(hours){
+
+    //shared_ptr<Comparator<shared_ptr<Book>>> bookComparator = make_shared<bookComparator>();
+    //bookIndex = make_unique<BinarySearchTree<shared_ptr<Book>>>(bookComparator);
+
+    patrons = make_unique<LinkedList<shared_ptr<Patron>>>();
+    books = make_unique<LinkedList<shared_ptr<Book>>>();
+    booksUnavailable = make_unique<LinkedList<shared_ptr<Book>>>();
+    booksAvailable = make_unique<LinkedList<shared_ptr<Book>>>();
+    dropBox = make_unique<LinkedStack<shared_ptr<Book>>>();
 
 }
 
 Library::~Library() {}
-
-LinkedList<Book> Library::availableBooks() {
-    return LinkedList<Book>();
-}
-
-LinkedList<Book> Library::checkedBooks() {
-    return LinkedList<Book>();
-}
-
-LinkedList<Patron> Library::registeredPatrons() {
-    return LinkedList<Patron>();
-}
-
-vector<Book> Library::searchBooks(string searchTerm) {
-    return vector<Book>();
-}
 
 bool Library::addBook(Book aBook) {
     return false;
