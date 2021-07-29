@@ -17,17 +17,17 @@ string Patron::getAddress() const {
 }
 
 string Patron::getPhoneNum() const {
-    return std::string();
+    return phoneNum;
 }
 
 void Patron::setName(const string &newName) {
-
+    name = newName;
 }
 
 void Patron::setAddress(const string &newAddress) {
-
+    address = newAddress;
 }
 
 void Patron::setPhoneNum(const string &newPhoneNum) {
-
+    phoneNum = newPhoneNum;
 }
