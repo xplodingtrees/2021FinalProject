@@ -5,4 +5,4 @@ made you look
 
 Authors:
 1: Brody Skaufel
-2: 
+2: Tomasz Maziarz
