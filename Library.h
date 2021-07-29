@@ -23,6 +23,7 @@ private:
 
 public:
     Library();
+    Library(const string &name,const string &address,const string &hours);
     ~Library();
 
     LinkedList<Book> availableBooks();
@@ -31,14 +32,69 @@ public:
     vector<Book> searchBooks(string searchTerm);
 
     //main methods
+    /**
+    * Adds a book to the book list and index
+    * @param aBook
+    * @return true if book added successfully, false if not
+    */
     bool addBook(Book aBook);
+
+    /**
+    * Removes a book from the list and index
+    * @param bookTitle
+    * @return true if book removed successfully, false if not
+    */
     bool removeBook(string bookTitle);
+
+    /**
+    * Adds a new patron to the list of registered patrons
+    * @param name
+    * @param address
+    * @param phoneNum
+    * @return true if book removed successfully, false if not
+    */
     bool addPatron(string name, string address, string phoneNum);
+
+    /**
+    * Removes a book from available books list and adds it to the list of checked out books
+    * @param phoneNum
+    * @param bookTitle
+    * @return true if book checked out successfully, false if not
+    */
     bool checkOutBook(string phoneNum, string bookTitle);
+
+    /**
+    * Places a book on hold status
+    * @param phoneNum
+    * @param bookTitle
+    * @return true if book set on hold successfully, false if not
+    */
     bool setHold(string phoneNum, string bookTitle);
+
+    /**
+    * Places a book on returned status
+    * @param bookTitle
+    * @return true if book returned successfully, false if not
+    */
     bool returnBook(string bookTitle);
+
+    /**
+    * If book is not on hold, it is added to the list of available books and removed from unavailable books list
+    * @param
+    * @return true if book was added successfully, false if not
+    */
     bool checkInBook();
+
+    /**
+    * Loads library data from file
+    * @param fileName
+    */
     void load(string fileName);
+
+    /**
+    * Saves library data to file
+    * @param fileName
+    */
     void save(string fileName);
 
     //setters/getters

@@ -1,12 +1,13 @@
 #include "Library.h"
 
-Library::Library() {
+Library::Library(){}
+
+Library::Library(const string &name,const string &address,const string &hours)
+        : name(name), address(address), hours(hours){ //, patrons(LinkedList<shared_ptr<Patron>>()) {
 
 }
 
-Library::~Library() {
-
-}
+Library::~Library() {}
 
 LinkedList<Book> Library::availableBooks() {
     return LinkedList<Book>();
