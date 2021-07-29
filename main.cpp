@@ -1,4 +1,6 @@
 #include "main.h"
 
-cout << "D" << endl;
-return 0;
+int main(){
+    cout << "" << endl;
+    return 0;
+}
