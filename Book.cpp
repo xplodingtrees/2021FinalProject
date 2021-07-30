@@ -143,3 +143,14 @@ ostream& operator<<(ostream& out, const Book &book) {
 
     return out;
 }
+
+vector<shared_ptr<Patron>> Book::getHolds() const {
+    LinkedQueue<shared_ptr<Patron>> holdQueueCopy = patronsOnHold;
+    vector<shared_ptr<Patron>> patronHoldVector;
+
+    while(!holdQueueCopy.isEmpty()){
+        patronHoldVector.push_back(holdQueueCopy.peekFront());
+        holdQueueCopy.dequeue();
+    }
+    return patronHoldVector;
+}

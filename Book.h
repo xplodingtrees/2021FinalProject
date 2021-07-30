@@ -77,6 +77,8 @@ public:
     void setIsAvailable(const bool &status);
     shared_ptr<Patron> getPatron() const;
     void setPatron(const shared_ptr<Patron> &aPatron);
+    vector<shared_ptr<Patron>> getHolds() const;
+
 };
 
 #include "Book.cpp"

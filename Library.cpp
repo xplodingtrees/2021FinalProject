@@ -133,7 +133,6 @@ void Library::load(string directory) {
     shared_ptr<Book> newBook = make_shared<Book>();
 
     while(getline(readFile, line)){
-
         //#TODO adjust scope for newBook
         //shared_ptr<Book> newBook = make_shared<Book>();
 
@@ -197,7 +196,11 @@ void Library::load(string directory) {
                 newBook->setIsAvailable(true);
                 line.erase(0,line.find(',')+1); //remove first section delimited in string
                 //cout << "adding current patron:" << line << ",to book:" << bookName << endl;
-                //cycle through patron list and find the match, then set the book to found patron
+
+                //search patron and add to book
+                newBook->setPatron(searchPatron(line));
+
+/*                //cycle through patron list and find the match, then set the book to found patron
                 for(int i=0; i<patrons->getLength(); i++){
                     if(patrons->getEntry(i)->getPhoneNum() == line){
                         //cout << "patron " << patrons->getEntry(i)->getName() << " added to book" << endl;
@@ -205,6 +208,8 @@ void Library::load(string directory) {
                         break; //break for loop once book patron found and set
                     }//end if
                 }//end for
+*/
+
             }//end if
             continue;
         }// end if
@@ -235,7 +240,9 @@ void Library::load(string directory) {
                     break;
                 }
                 line = line.substr(2,line.length()); //trim string to just patron phone
-                cout << "adding holds:" << line << ",to book:" << bookName << endl;
+                //cout << "adding holds:" << line << ",to book:" << bookName << endl;
+
+                newBook->addHold()
             }
             continue;
         }// end if
@@ -261,6 +268,8 @@ void Library::load(string directory) {
             line = line.substr(2,line.length()); //trim string to just patron name
             //cout << "adding book to drop box:" << line << endl;
             //search bookindex for book, then add by name
+
+
             dropBox->push(); ///change dropbox type to just string for title?
         }// end if
     }//end while
@@ -271,6 +280,7 @@ void Library::save(string directory) {
 
     ofstream writeFile(directory); //instantiate the output file stream object
     vector<shared_ptr<Book>> bookVector = books->toVector();
+    shared_ptr<LinkedStack<shared_ptr<Book>>> dropBoxCopy = dropBox; //make a copy of drop box, save shouldn't pop actual
 
     //populate patrons section
     writeFile << "Patrons=\n";
@@ -330,6 +340,8 @@ void Library::save(string directory) {
             //add patron phone number to hold section
             ////need to get access to book hold queue for this
             //bookVector.at(index).getpatrons
+
+
         }
         else{
             //can probably omit this part eventually
@@ -342,9 +354,9 @@ void Library::save(string directory) {
     //populate bin section
     writeFile << "Bin=\n";
     //cycle through drop box and save book title to file
-    while(!dropBox->isEmpty()){
-        writeFile << "\t+" << dropBox->peek()->getTitle() << endl;
-        dropBox->pop();
+    while(!dropBoxCopy->isEmpty()){
+        writeFile << "\t+" << dropBoxCopy->peek()->getTitle() << endl;
+        dropBoxCopy->pop();
     }//end while
     cout << "Library data saved to " << directory << endl;
 }
@@ -379,7 +391,7 @@ vector<shared_ptr<Book>> Library::availableBooks() {
 
     for(int i = 0; i < allBooks.size(); i++) {
         if(allBooks[i]->getIsAvailable()) {
-            booksAvailable.push_back(allBooks[i]);// If book is avaqilable, add it to the list
+            booksAvailable.push_back(allBooks[i]);// If book is available, add it to the list
         } // End if
     } // End for
     return booksAvailable;
