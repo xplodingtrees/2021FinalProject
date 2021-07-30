@@ -44,16 +44,12 @@ int getValidOption(){
     return 1;
 }
 
-int test(){
-    shared_ptr<Library> test = make_shared<Library>();
-
-    string directory;
-    cout << "Enter the absolute library data file path (do not include filename):";
-
-    cin >> directory;
-    //directory = "C:\\Users\\ocelo\\Desktop\\Library";
-    cout << endl;
-
+/**
+* Checks which file system is used and appends directory with filename accordingly
+* @param directory
+* @return list of available books
+*/
+string processDirectory(string directory){
     //check if windows/linux, then append filename to given directory string
     if(directory.substr(1,1) == ":"){
         //if last char is a separator, remove it
@@ -71,13 +67,13 @@ int test(){
         //add filename to directory
         directory = directory + "/libraryData";
     }
-
-    test->save(directory);
-    test->load(directory);
-    return 0;
+    return directory;
 }
 
 int main(){
+    shared_ptr<Library> library = make_shared<Library>();
+    string directory;
+    //directory = "C:\\Users\\ocelo\\Desktop\\Library";
     int option = 0;
 
     while (option>=0){
@@ -106,8 +102,16 @@ int main(){
             case 11: // check in books from drop box
                 break;
             case 20: // load data
+                cout << "Enter the absolute library data file path (do not include filename):";
+                cin >> directory;
+                cout << endl;
+                library->load(processDirectory(directory));
                 break;
             case 21: // save data
+                cout << "Enter the absolute library data file path (do not include filename):";
+                cin >> directory;
+                cout << endl;
+                library->save(processDirectory(directory));
                 break;
             case -1: // exit
                 return 0;
