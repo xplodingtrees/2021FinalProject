@@ -15,15 +15,12 @@ Library::Library(const string &name, const string &address, const string &hours)
     booksUnavailable = make_shared<LinkedList<shared_ptr<Book>>>();
     booksAvailable = make_shared<LinkedList<shared_ptr<Book>>>();
     dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
-
 }
 
 Library::~Library() {}
 
-
 bool Library::addBook(shared_ptr<Book> aBook) {
     bookIndex->add(aBook);
-
 }
 
 bool Library::removeBook(string bookTitle) {
@@ -47,17 +44,18 @@ bool Library::setHold(string phoneNum, string bookTitle) {
 }
 
 bool Library::returnBook(string bookTitle) {
-    for(int index = 0; index < booksUnavailable->getLength(); index++){
-        if(booksUnavailable->getEntry(index)->getTitle() == bookTitle){
-            dropBox->push(booksUnavailable->getEntry(index)); //add book to drop box stack
-            booksUnavailable->remove(index); //remove book from booksUnavailable list
+    for(int index = 0; index < books->getLength(); index++){
+        if(books->getEntry(index)->getTitle() == bookTitle){
+            dropBox->push(books->getEntry(index));
             break;
         }
     }
 }
 
-bool Library::checkInBook() {
-    return false;
+bool Library::checkInBooks() {
+    while(!dropBox->isEmpty()){
+        dropBox->peek()->setIsAvailable();
+    }
 }
 
 void Library::load(string directory) {
@@ -138,13 +136,12 @@ void Library::load(string directory) {
             cout << "adding hold:" << line << ",to book:" << bookName << endl;
             continue;
         }
-
     }
 
     //load drop box
     while(getline(readFile, line)){
         count++; //increment line count
-        if (line.find("+") != string::npos){
+        if (line.find('+') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
             cout << "adding book to drop box:" << line << endl;
         }
@@ -203,8 +200,6 @@ void Library::save(string directory) {
     for(int index = 0; index < 2; index++){
         writeFile << "\t+" << dropbox[index] << endl;
     }
-
-
 
     //check for extension, remove
     cout << "Library data saved to " << directory << endl;
