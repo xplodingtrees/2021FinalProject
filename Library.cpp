@@ -99,15 +99,16 @@ bool Library::checkInBook() {
 
 void Library::load(string directory) {
     string line;
-    int bookCount = 0; //counter used to track book count/index
+    //int bookCount = 0; //counter used to track book count/index
     int count = 0; //holds line number
     string bookName; //holds current book name
     fstream readFile(directory); //read file
     int insertPoint = 1;
+    //bool endOfBookSection = false;
 
     //load patrons
     while(getline(readFile, line)){
-        shared_ptr<Patron> newPatron = make_shared<Patron>(); ////correct place check
+        shared_ptr<Patron> newPatron = make_shared<Patron>();
         count++; //increment line count
         if (line.find('>') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
@@ -128,9 +129,18 @@ void Library::load(string directory) {
         }// end if
     }//end while
 
-    //load books
-    while(getline(readFile, line)){
+/*    while(endOfBookSection == false){
         shared_ptr<Book> newBook = make_shared<Book>();
+
+    }*/
+
+    //load books
+
+    shared_ptr<Book> newBook = make_shared<Book>();
+
+    while(getline(readFile, line)){
+        //#TODO adjust scope for newBook
+        //shared_ptr<Book> newBook = make_shared<Book>();
         count++; //increment line count
 
         if (line.find('{') != string::npos){
@@ -138,7 +148,9 @@ void Library::load(string directory) {
             line = line.substr(0,line.length()-1); //trim string to just book name
             //cout << "adding book " << bookCount << ":" << line << endl;
             newBook->setTitle(line);
-            bookCount++;
+            bookIndex->add(newBook); //add the book to index
+            books->add(newBook); //add to book list
+            //bookCount++;
             continue;
         }// end if
 
@@ -206,7 +218,9 @@ void Library::load(string directory) {
                 shared_ptr<Author> newAuthor = make_shared<Author>(line); //create new author
                 //cout << "adding author:" << line << ",to book:" << bookName << endl;
                 //newAuthor->setName(line); //set new author name
-                newBook->addAuthor(newAuthor);
+                newBook->addAuthor(newAuthor); //add author to book
+                authors->add(newAuthor); //add author to master author list
+
             }
         }// end if
 
@@ -228,6 +242,10 @@ void Library::load(string directory) {
         if (line.find("Bin=") != string::npos){
             //end adding holds
             //cout << endl;
+            //set end of booksection to true
+            //endOfBookSection = true;
+
+            shared_ptr<Book> newBook = make_shared<Book>();
             break;
         }// end if
     }//end while
