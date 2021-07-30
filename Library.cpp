@@ -12,8 +12,6 @@ Library::Library(const string &name, const string &address, const string &hours)
 
     patrons = make_shared<LinkedList<shared_ptr<Patron>>>();
     books = make_shared<LinkedList<shared_ptr<Book>>>();
-    booksUnavailable = make_shared<LinkedList<shared_ptr<Book>>>();
-    booksAvailable = make_shared<LinkedList<shared_ptr<Book>>>();
     dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
 
 }
@@ -21,32 +19,39 @@ Library::Library(const string &name, const string &address, const string &hours)
 Library::~Library() {}
 
 
-bool Library::addBook(Book aBook) {
+bool Library::addBook(shared_ptr<Book> aBook) {
+    //#Todo
     bookIndex->add(aBook);
 
 }
 
 bool Library::removeBook(string bookTitle) {
+    //#Todo
     bookIndex->inorderTraverse()
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
+    //#Todo
     patrons->insert();
 }
 
 bool Library::checkOutBook(string phoneNum, string bookTitle) {
+    //#Todo
     return false;
 }
 
 bool Library::setHold(string phoneNum, string bookTitle) {
+    //#Todo
     return false;
 }
 
 bool Library::returnBook(string bookTitle) {
+    //#Todo
     return false;
 }
 
 bool Library::checkInBook() {
+//#Todo
     return false;
 }
 
@@ -225,10 +230,28 @@ void Library::setHours(const string &newHours) {
 }
 
 shared_ptr<LinkedList<shared_ptr<Book>>> Library::availableBooks() {
+    shared_ptr<LinkedList<shared_ptr<Book>>> booksAvailable = make_shared<LinkedList<shared_ptr<Book>>>();
+    int newIndex = 0;
+    for(int i = 1; i <= books->getLength(); i++) {
+        shared_ptr<Book> thisBook = books->getEntry(i);
+        if(thisBook->getIsAvailable()) {
+            booksAvailable->insert(newIndex, thisBook);
+            newIndex++;
+        }
+    }
     return booksAvailable;
 }
 
 shared_ptr<LinkedList<shared_ptr<Book>>> Library::checkedBooks() {
+    shared_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable = make_shared<LinkedList<shared_ptr<Book>>>();
+    int newIndex = 0;
+    for(int i = 1; i <= books->getLength(); i++) {
+        shared_ptr<Book> thisBook = books->getEntry(i);
+        if(!thisBook->getIsAvailable()) {
+            booksUnavailable->insert(newIndex, thisBook);
+            newIndex++;
+        }
+    }
     return booksUnavailable;
 }
 

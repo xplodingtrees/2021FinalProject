@@ -21,8 +21,6 @@ private:
     shared_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
     shared_ptr<LinkedList<shared_ptr<Patron>>> patrons;
     shared_ptr<LinkedList<shared_ptr<Book>>> books;
-    shared_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable;
-    shared_ptr<LinkedList<shared_ptr<Book>>> booksAvailable;
     shared_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
 
     string name;
