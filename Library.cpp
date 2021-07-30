@@ -37,6 +37,7 @@ bool Library::removeBook(string bookTitle) {
 bool Library::addPatron(string name, string address, string phoneNum) {
     //#Todo
     patrons->insert();
+    return true;
 }
 
 bool Library::checkOutBook(string phoneNum, string bookTitle) {
@@ -51,16 +52,23 @@ bool Library::setHold(string phoneNum, string bookTitle) {
 
 bool Library::returnBook(string bookTitle) {
     //#Todo
-    return false;
+    for(int index = 0; index < books->getLength(); index++){
+        if(books->getEntry(index)->getTitle() == bookTitle){
+            dropBox->push(books->getEntry(index));
+            break;
+        }
+    }
 }
 
-bool Library::checkInBook() {
-//#Todo
+bool Library::checkInBooks() {
+    //#Todo
+    while(!dropBox->isEmpty()){
+        dropBox->peek()->setIsAvailable();
+    }
     return false;
 }
 
 void Library::load(string directory) {
-
     string line;
     int posMarker = 0; //holds a position in file
     int bookCount = 0; //counter used to track book count/index
@@ -137,13 +145,12 @@ void Library::load(string directory) {
             cout << "adding hold:" << line << ",to book:" << bookName << endl;
             continue;
         }
-
     }
 
     //load drop box
     while(getline(readFile, line)){
         count++; //increment line count
-        if (line.find("+") != string::npos){
+        if (line.find('+') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
             cout << "adding book to drop box:" << line << endl;
         }

@@ -120,7 +120,7 @@ public:
     * @param
     * @return true if book was added successfully, false if not
     */
-    bool checkInBook();
+    bool checkInBooks();
 
     /**
     * Loads library data from file
