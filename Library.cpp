@@ -11,9 +11,9 @@ Library::Library(const string &name, const string &address, const string &hours)
     bookIndex = make_shared<BinarySearchTree<shared_ptr<Book>>>(bookComparator);
 
     patrons = make_shared<LinkedList<shared_ptr<Patron>>>();
-    books = make_shared<LinkedList<shared_ptr<Book>>>();
+    books = make_shared<LinkedBag<shared_ptr<Book>>>();
     dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
-    authors = make_shared<LinkedList<Author>>;
+    authors = make_shared<LinkedBag<Author>>();
 
 }
 
