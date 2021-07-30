@@ -7,32 +7,31 @@ Library::Library(){}
 Library::Library(const string &name, const string &address, const string &hours)
         : name(name), address(address), hours(hours){
 
-    //shared_ptr<Comparator<shared_ptr<Book>>> bookComparator = make_shared<bookComparator>();
-    //bookIndex = make_unique<BinarySearchTree<shared_ptr<Book>>>(bookComparator);
+    shared_ptr<Comparator<shared_ptr<Book>>> bookComparator = make_shared<BookComparator>();
+    bookIndex = make_shared<BinarySearchTree<shared_ptr<Book>>>(bookComparator);
 
-/*
-    patrons = make_unique<LinkedList<shared_ptr<Patron>>>();
-    books = make_unique<LinkedList<shared_ptr<Book>>>();
-    booksUnavailable = make_unique<LinkedList<shared_ptr<Book>>>();
-    booksAvailable = make_unique<LinkedList<shared_ptr<Book>>>();
-    dropBox = make_unique<LinkedStack<shared_ptr<Book>>>();
-*/
+    patrons = make_shared<LinkedList<shared_ptr<Patron>>>();
+    books = make_shared<LinkedList<shared_ptr<Book>>>();
+    booksUnavailable = make_shared<LinkedList<shared_ptr<Book>>>();
+    booksAvailable = make_shared<LinkedList<shared_ptr<Book>>>();
+    dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
 
 }
 
 Library::~Library() {}
 
-/*
+
 bool Library::addBook(Book aBook) {
-    return false;
-}*/
+    bookIndex->add(aBook);
+
+}
 
 bool Library::removeBook(string bookTitle) {
-    return false;
+    bookIndex->inorderTraverse()
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
-    return false;
+    patrons->insert();
 }
 
 bool Library::checkOutBook(string phoneNum, string bookTitle) {
@@ -223,4 +222,21 @@ void Library::setAddress(const string &newAddress) {
 
 void Library::setHours(const string &newHours) {
     hours = newHours;
+}
+
+shared_ptr<LinkedList<shared_ptr<Book>>> Library::availableBooks() {
+    return booksAvailable;
+}
+
+shared_ptr<LinkedList<shared_ptr<Book>>> Library::checkedBooks() {
+    return booksUnavailable;
+}
+
+shared_ptr<LinkedList<shared_ptr<Patron>>> Library::registeredPatrons() {
+    return patrons;
+}
+
+vector<Book> Library::searchBooks(string searchTerm) {
+    //#TODO searchbooks
+    return vector<Book>();
 }

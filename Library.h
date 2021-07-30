@@ -7,6 +7,7 @@
 #include "BinarySearchTree.h"
 #include "LinkedList.h"
 #include "LinkedStack.h"
+#include "BookComparator.h"
 
 #include "fstream"
 #include "filesystem"
@@ -16,15 +17,13 @@ using namespace std;
 
 class Library {
 private:
-/*
-    unique_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
-    unique_ptr<LinkedList<shared_ptr<Patron>>> patrons;
-    unique_ptr<LinkedList<shared_ptr<Book>>> books;
-    unique_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable;
-    unique_ptr<LinkedList<shared_ptr<Book>>> booksAvailable;
-    unique_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
-*/
 
+    shared_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
+    shared_ptr<LinkedList<shared_ptr<Patron>>> patrons;
+    shared_ptr<LinkedList<shared_ptr<Book>>> books;
+    shared_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable;
+    shared_ptr<LinkedList<shared_ptr<Book>>> booksAvailable;
+    shared_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
 
     string name;
     string address;
@@ -35,20 +34,39 @@ public:
     Library(const string &name,const string &address,const string &hours);
     ~Library();
 
-/*
-    LinkedList<Book> availableBooks();
-    LinkedList<Book> checkedBooks();
-    LinkedList<Patron> registeredPatrons();
+    /**
+    * Adds a book to the book list and index
+    * @return list of available books
+    */
+    shared_ptr<LinkedList<shared_ptr<Book>>>  availableBooks();
+
+    /**
+    * Adds a book to the book list and index
+    * @return list of checked books
+    */
+    shared_ptr<LinkedList<shared_ptr<Book>>> checkedBooks();
+
+    /**
+    * Adds a book to the book list and index
+    * @return list of patrons
+    */
+    shared_ptr<LinkedList<shared_ptr<Patron>>> registeredPatrons();
+
+    /**
+    * Adds a book to the book list and index
+    * @param searchTerm
+    * @return vector of books that match the search term
+    */
     vector<Book> searchBooks(string searchTerm);
-*/
+
 
     //main methods
     /**
-    * Adds a book to the book list and index
+    * Creates and adds a book to the book list and index
     * @param aBook
     * @return true if book added successfully, false if not
     */
-    //bool addBook(Book aBook);
+    bool addBook(Book aBook);
 
     /**
     * Removes a book from the list and index
