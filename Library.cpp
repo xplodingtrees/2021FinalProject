@@ -89,18 +89,25 @@ void Library::load(string directory) {
     int count = 0; //holds line number
     string bookName; //holds current book name
     fstream readFile(directory); //read file
+    int insertPoint = 1;
 
     //load patrons
     while(getline(readFile, line)){
+        shared_ptr<Patron> newPatron = make_shared<Patron>(); ////correct place check
         count++; //increment line count
         if (line.find('>') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
-            cout << "adding patron:" << line.substr(0, line.find(',')) << endl;
-            line.erase(0,line.find(',')+1);
-            cout << "adding patron address:" << line.substr(0, line.find(',')) << endl;
-            line.erase(0,line.find(',')+1);
-            cout << "adding patron phone:" << line.substr(0, line.find(',')) << endl;
+            //cout << "adding patron:" << line.substr(0, line.find(',')) << endl;
+            newPatron->setName(line.substr(0, line.find(',')));
+            line.erase(0,line.find(',')+1); //remove first section delimited in string
+            //cout << "adding patron address:" << line.substr(0, line.find(',')) << endl;
+            newPatron->setAddress(line.substr(0, line.find(',')));
+            line.erase(0,line.find(',')+1); //remove second section delimited in string
+            //cout << "adding patron phone:" << line.substr(0, line.find(',')) << endl;
+            newPatron->setPhoneNum(line.substr(0, line.find(',')));
             cout << endl;
+            patrons->insert(insertPoint, newPatron);
+            insertPoint++; //increment insert point index
         }
         if (line.find("Books=") != string::npos){
             break;
@@ -109,13 +116,14 @@ void Library::load(string directory) {
 
     //load books
     while(getline(readFile, line)){
+        shared_ptr<Book> newBook = make_shared<Book>();
         count++; //increment line count
 
         if (line.find('{') != string::npos){
             cout << endl;
             line = line.substr(0,line.length()-1); //trim string to just book name
-            cout << "adding book " << bookCount << ":" << line << endl;
-            bookName = line; //set current book
+            //cout << "adding book " << bookCount << ":" << line << endl;
+            newBook->setTitle(line);
             bookCount++;
             continue;
         }
@@ -124,7 +132,8 @@ void Library::load(string directory) {
         if (line.find("isbn=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book isbn
-            cout << "adding isbn:" << line << ",to book:" << bookName << endl;
+            //cout << "adding isbn:" << line << ",to book:" << bookName << endl;
+            newBook->setIsbn(stoi(line));
             continue;
         }
 
@@ -132,7 +141,8 @@ void Library::load(string directory) {
         if (line.find("date=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book date
-            cout << "adding date:" << line << ",to book:" << bookName << endl;
+            //cout << "adding date:" << line << ",to book:" << bookName << endl;
+            newBook->setPubDate(line);
             continue;
         }
 
@@ -140,15 +150,23 @@ void Library::load(string directory) {
         if (line.find("publisher=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book publisher
-            cout << "adding publisher:" << line << ",to book:" << bookName << endl;
+            //cout << "adding publisher:" << line << ",to book:" << bookName << endl;
+            newBook->setPublisher(line);
             continue;
         }
 
+        //#TODO confirm this is functional
         //load status
         if (line.find("status=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book status
-            cout << "adding status:" << line << ",to book:" << bookName << endl;
+            //cout << "adding status:" << line << ",to book:" << bookName << endl;
+            if(line == "0"){
+                newBook->setIsAvailable(false);
+            }
+            else{
+                newBook->setIsAvailable(true);
+            }
             continue;
         }
 
@@ -156,24 +174,26 @@ void Library::load(string directory) {
         if (line.find("authors=") != string::npos){
             while(true){
                 getline(readFile, line);
-                if(line.find("holds=") != string::npos){
-                    cout << "HOLDS FOUND: " << endl;
+                if(line.find("holds=") != string::npos){ //break if end of section found
                     break;
                 }
                 line = line.substr(2,line.length()); //trim string to just book author
-                cout << "adding author:" << line << ",to book:" << bookName << endl;
+                shared_ptr<Author> newAuthor = make_shared<Author>(line); //create new author
+                //cout << "adding author:" << line << ",to book:" << bookName << endl;
+                //newAuthor->setName(line); //set new author name
+                newBook->addAuthor(newAuthor);
             }
         }
 
+        //#TODO finish holds load section
         //load holds
         if (line.find("holds=") != string::npos){
             while(true){
                 getline(readFile, line);
-                if(line.find('}') != string::npos){
-                    cout << "END FOUND: " << endl;
+                if(line.find('}') != string::npos){ //break if end of section found
                     break;
                 }
-                line = line.substr(2,line.length()); //trim string to just book author
+                line = line.substr(2,line.length()); //trim string to just patron phone
                 cout << "adding holds:" << line << ",to book:" << bookName << endl;
             }
             continue;
@@ -181,100 +201,97 @@ void Library::load(string directory) {
 
         //end loop if bin section encountered
         if (line.find("Bin=") != string::npos){
-            //end adding patrons
-            cout << endl;
+            //end adding holds
+            //cout << endl;
             break;
         }
     }
 
+    //#TODO finish drop box load section
     //load drop box
     while(getline(readFile, line)){
         count++; //increment line count
         if (line.find('+') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
-            cout << "adding book to drop box:" << line << endl;
+            //cout << "adding book to drop box:" << line << endl;
+            //search bookindex for book, then add by name
+            dropBox->push(); ///change dropbox type to just string for title?
         }
     }
     readFile.close();
 }
 
 void Library::save(string directory) {
-    //temp test arrays
-    string patrons[3] = {"patron1", "patron2", "patron3"};
-    string patronAddresses[3] = {"address1", "address2", "address3"};
-    string patronPhone[3] = {"phone1", "phone2", "phone3"};
-    string dropbox[3] = {"book1", "book2"};
-    string books[3][2] =  {{"b1author1", "b1author2"}, {"b2author1", "b2author2"}, {"b3author1", "b3author2"}};
-    int isbn[3] = {123, 455, 214};
-    string pubDates[3] = {"11/10", "1331/12", "176/16"};
-    string publishers[3] = {"pub1", "pub2", "pub3"};
 
-    string writeFileAddress = directory;
-
-    ofstream writeFile(writeFileAddress);
+    ofstream writeFile(directory); //instantiate the output file stream object
+    vector<shared_ptr<Book>> bookVector = books->toVector();
 
     //populate patrons section
     writeFile << "Patrons=\n";
-    for(int index = 0; index < 3; index++){
-        writeFile << "\t" << ">" << patrons[index] << "," << patronAddresses[index] << "," << patronPhone[index] << "\n";
+    for(int index = 0; index < patrons->getLength(); index++){
+        //write patron data, delimit with comma
+        writeFile << "\t" << ">" << patrons->getEntry(index)->getName() << ","
+            << patrons->getEntry(index)->getAddress() << "," << patrons->getEntry(index)->getPhoneNum() << "\n";
     }
-
-/*    for(int index = 0; index < patrons->getLength(); index++){
-        writeFile << "\t" << ">" << patrons->getEntry(index)->getName() << "\n";
-        writeFile << "\t" << ">" << patrons->getEntry(index)->getAddress() << "\n";
-        writeFile << "\t" << ">" << patrons->getEntry(index)->getPhoneNum() << "\n";
-    }*/
 
     //populate book section
     writeFile << "Books=\n";
     //cycle through books and add to file
-    for(int index = 0; index < 3; index++){
-        writeFile << "BOOKNAME" << "{" << "\n";
+    for(int index = 0; index < bookVector.size(); index++){
+        //vector of book authors used to populate author section
+        vector<shared_ptr<Author>> bookAuthors = bookVector.at(index)->getAuthors();
+
+        writeFile << bookVector.at(index)->getTitle() << "{" << "\n"; //write book title
 
         //add isbn
         writeFile << "\tisbn=" << "\n";
-        writeFile << "\t\t" << isbn[index] << "\n";
+        writeFile << "\t\t" << bookVector.at(index)->getIsbn() << "\n";
 
         //add publish date
         writeFile << "\tdate=" << "\n";
-        writeFile << "\t\t" << pubDates[index] << "\n";
+        writeFile << "\t\t" << bookVector.at(index)->getPubDate() << "\n";
 
         //add publisher
         writeFile << "\tpublisher=" << "\n";
-        writeFile << "\t\t" << publishers[index] << "\n";
+        writeFile << "\t\t" << bookVector.at(index)->getPublisher() << "\n";
 
         //write status
+        //#TODO if book is unavailable, save patron too
         writeFile << "\tstatus=\n";
-
-        //if book available
-        //else if book checked out
-        //else book is in bin
-        writeFile << "\t\tavailable\n";
+        writeFile << "\t\t" << to_string(bookVector.at(index)->getIsAvailable()) <<  "\n";
 
         //copy all the book authors
+        //#TODO check author section properly implemented once getAuthors is defined
         writeFile << "\tauthors=" << "\n";
-        for(int index2 = 0; index2 < 2; index2++){
-            writeFile << "\t\t" << books[index][index2] << "\n";
+        for(int index2 = 0; index2 < bookAuthors.size(); index2++){
+            writeFile << "\t\t" << bookAuthors.at(index2)->getName() << "\n";
         }
 
         //write holds
         writeFile << "\tholds=\n";
 
-        //if there are patrons on hold, add to file
-        //if stack empty, add empty flag instead
-        writeFile << "\t\tpatron1\n";
+        //#TODO finish holds save section
+        //check if holds exist
+        if(bookVector.at(index)->isOnHold()){
+            //add patron phone number to hold section
+            ////need to get access to book hold queue for this
+            //bookVector.at(index).getpatrons
+        }
+        else{
+            //can probably omit this part eventually
+            writeFile << "\t\tnone\n";
+        }
 
         writeFile << "}\n";
     }
 
     //populate bin section
     writeFile << "Bin=\n";
-    //cycle through drop box and add to file
-    for(int index = 0; index < 2; index++){
-        writeFile << "\t+" << dropbox[index] << endl;
+    //cycle through drop box and save book title to file
+    while(!dropBox->isEmpty()){
+        writeFile << "\t+" << dropBox->peek()->getTitle() << endl;
+        dropBox->pop();
     }
-
-    //check for extension, remove
     cout << "Library data saved to " << directory << endl;
 }
 
