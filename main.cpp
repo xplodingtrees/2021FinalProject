@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/**
+* Prints menu options and takes user input to determine option
+* @return menu option
+*/
 int printMenu(){
     int option = 0;
     cout << string(60, '=')  << endl;
@@ -47,7 +51,7 @@ int getValidOption(){
 /**
 * Checks which file system is used and appends directory with filename accordingly
 * @param directory
-* @return list of available books
+* @return file path
 */
 string processDirectory(string directory){
     //check if windows/linux, then append filename to given directory string
@@ -102,13 +106,13 @@ int main(){
             case 11: // check in books from drop box
                 break;
             case 20: // load data
-                cout << "Enter the absolute library data file path (do not include filename):";
+                cout << "Enter the absolute library data file path to load from (do not include filename):";
                 cin >> directory;
                 cout << endl;
                 library->load(processDirectory(directory));
                 break;
             case 21: // save data
-                cout << "Enter the absolute library data file path (do not include filename):";
+                cout << "Enter the absolute library data file path to save to (do not include filename):";
                 cin >> directory;
                 cout << endl;
                 library->save(processDirectory(directory));
