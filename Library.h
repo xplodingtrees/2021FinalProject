@@ -72,7 +72,7 @@ public:
    * @param searchTerm
    * @return pointer to the matching book or nullpointer if its not found
    */
-    shared_ptr<Patron> searchPatron(const string& phoneNum)
+    shared_ptr<Patron> searchPatron(const string& phoneNum);
 
     //main methods
     /**
@@ -97,30 +97,32 @@ public:
     * @param phoneNum
     * @return true if patron was added successfully, false if not
     */
-    bool addPatron(string name, string address, string phoneNum);
+    bool addPatron(const string& name,const string& address,const string& phoneNum);
 
     /**
-    * Removes a book from available books list and adds it to the list of checked out books
-    * @param phoneNum
-    * @param bookTitle
-    * @return true if book was checked out successfully, false if not
+    * Removes a book from available books list and adds it to the list of checked out books, setting the book as checked out by the patrons whos phone number is given
+    * @pre the book should be available before hand (not strictly required)
+    * @param phoneNum patrons number
+    * @param bookTitle is books title
+    * @return true if book was checked out successfully, false if one of them doesn't exist or the book is on hold (or other failure reasons)
     */
-    bool checkOutBook(string phoneNum, string bookTitle);
+    bool checkOutBook(const string& phoneNum,const string& bookTitle);
 
     /**
-    * Places a book on hold status
-    * @param phoneNum
-    * @param bookTitle
-    * @return true if book set on hold successfully, false if not
+    * Places a book on hold status.
+    * @pre book must not be available
+    * @param phoneNum of patron
+    * @param bookTitle of book
+    * @return true if book set on hold successfully, false if either value is not found. Exact match required.
     */
-    bool setHold(string phoneNum, string bookTitle);
+    bool setHold(const string& phoneNum,const string& bookTitle);
 
     /**
     * Places a book on returned status
     * @param bookTitle
     * @return true if book returned successfully, false if not
     */
-    bool returnBook(string bookTitle);
+    bool returnBook(const string& bookTitle);
 
     /**
     * Attempts to check in a book from the drop box. If the book is on hold, it checks out the book for that individual

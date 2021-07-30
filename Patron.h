@@ -11,6 +11,8 @@ private:
 
 public:
     Patron();
+    Patron(const string &name, const string &address, const string &phoneNum);
+
     ~Patron();
 
     //setters/getters
