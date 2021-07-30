@@ -104,7 +104,7 @@ void Library::load(string directory) {
     string bookName; //holds current book name
     fstream readFile(directory); //read file
     int insertPoint = 1;
-    //bool endOfBookSection = false;
+    bool endOfBookSection = false;
 
     //load patrons
     while(getline(readFile, line)){
@@ -139,8 +139,14 @@ void Library::load(string directory) {
     shared_ptr<Book> newBook = make_shared<Book>();
 
     while(getline(readFile, line)){
+
         //#TODO adjust scope for newBook
         //shared_ptr<Book> newBook = make_shared<Book>();
+        if(endOfBookSection){
+            newBook = make_shared<Book>();
+            endOfBookSection = false;
+        }
+
         count++; //increment line count
 
         if (line.find('{') != string::npos){
@@ -242,8 +248,9 @@ void Library::load(string directory) {
         if (line.find("Bin=") != string::npos){
             //end adding holds
             //cout << endl;
-            //set end of booksection to true
-            //endOfBookSection = true;
+
+            //set end of booksection to true, to create a new pointer for next book
+            endOfBookSection = true;
 
             shared_ptr<Book> newBook = make_shared<Book>();
             break;
