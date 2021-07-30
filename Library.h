@@ -66,7 +66,7 @@ public:
     * @param aBook
     * @return true if book added successfully, false if not
     */
-    bool addBook(Book aBook);
+    bool addBook(shared_ptr<Book> aBook);
 
     /**
     * Removes a book from the list and index

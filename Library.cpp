@@ -21,17 +21,21 @@ Library::Library(const string &name, const string &address, const string &hours)
 Library::~Library() {}
 
 
-bool Library::addBook(Book aBook) {
+bool Library::addBook(shared_ptr<Book> aBook) {
     bookIndex->add(aBook);
 
 }
 
 bool Library::removeBook(string bookTitle) {
-    bookIndex->inorderTraverse()
+    //#TODO removeBooks
+    //bookIndex->inorderTraverse();
+    return true;
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
-    patrons->insert();
+    //#TODO addpatron
+    //patrons->insert();
+    return true;
 }
 
 bool Library::checkOutBook(string phoneNum, string bookTitle) {
@@ -43,7 +47,13 @@ bool Library::setHold(string phoneNum, string bookTitle) {
 }
 
 bool Library::returnBook(string bookTitle) {
-    return false;
+    for(int index = 0; index < booksUnavailable->getLength(); index++){
+        if(booksUnavailable->getEntry(index)->getTitle() == bookTitle){
+            dropBox->push(booksUnavailable->getEntry(index)); //add book to drop box stack
+            booksUnavailable->remove(index); //remove book from booksUnavailable list
+            break;
+        }
+    }
 }
 
 bool Library::checkInBook() {
