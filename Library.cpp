@@ -19,7 +19,6 @@ Library::Library(const string &name, const string &address, const string &hours)
 
 Library::~Library() = default;
 
-
 bool Library::addBook(shared_ptr<Book> &aBook) {
     bool added = false;
     aBook->setIsAvailable(true);
