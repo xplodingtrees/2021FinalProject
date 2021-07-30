@@ -231,7 +231,6 @@ void Library::load(string directory) {
             }
         }// end if
 
-        //#TODO finish holds load section
         //load holds
         if (line.find("holds=") != string::npos){
             while(true){
@@ -241,8 +240,8 @@ void Library::load(string directory) {
                 }
                 line = line.substr(2,line.length()); //trim string to just patron phone
                 //cout << "adding holds:" << line << ",to book:" << bookName << endl;
-
-                newBook->addHold()
+                shared_ptr<Patron> patronFound = searchPatron(line); //get patron by phone number and assign to patronFound
+                newBook->addHold(patronFound); //add hold for book using found patron
             }
             continue;
         }// end if
@@ -255,7 +254,7 @@ void Library::load(string directory) {
             //set end of booksection to true, to create a new pointer for next book
             endOfBookSection = true;
 
-            shared_ptr<Book> newBook = make_shared<Book>();
+            //shared_ptr<Book> newBook = make_shared<Book>();
             break;
         }// end if
     }//end while
@@ -268,9 +267,7 @@ void Library::load(string directory) {
             line = line.substr(2,line.length()); //trim string to just patron name
             //cout << "adding book to drop box:" << line << endl;
             //search bookindex for book, then add by name
-
-
-            dropBox->push(); ///change dropbox type to just string for title?
+            dropBox->push(searchBookTitle(line));
         }// end if
     }//end while
     readFile.close();
@@ -336,11 +333,12 @@ void Library::save(string directory) {
 
         //#TODO finish holds save section
         //check if holds exist
-        if(bookVector.at(index)->isOnHold()){
-            //add patron phone number to hold section
-            ////need to get access to book hold queue for this
-            //bookVector.at(index).getpatrons
-
+        if(bookVector.at(index)->isOnHold()){ //add patron phone number to hold section
+            //grab the patrons on hold for book
+            vector<shared_ptr<Patron>> patronHoldsVector = bookVector.at(index)->getHolds();
+            for(int index3 = 0; index3 < patronHoldsVector.size(); index3++){
+                writeFile << "\t\t" << patronHoldsVector.at(index3)->getPhoneNum() << "\n"; //write patron phone number
+            }//end for
 
         }
         else{
