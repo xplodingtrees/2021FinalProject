@@ -22,6 +22,7 @@ bool Book::addHold(shared_ptr<Patron> &aPatron) {
 bool Book::nextHold() {
     bool returnVal;
     if(isOnHold()) {
+        setPatron(patronsOnHold.peekFront());// Puts the first one on hold into the current patron set
         returnVal = patronsOnHold.dequeue();
     } else {
         returnVal = false;

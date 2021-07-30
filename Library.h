@@ -74,14 +74,14 @@ public:
     * @param aBook is the book to be added
     * @return true if book added successfully, false if not
     */
-    bool addBook(shared_ptr<Book> aBook);
+    bool addBook(shared_ptr<Book> &aBook);
 
     /**
     * Removes a book from the list and index
     * @param bookTitle
     * @return true if book removed successfully, false if not
     */
-    bool removeBook(string bookTitle);
+    bool removeBook(const string& bookTitle);
 
     /**
     * Adds a new patron to the list of registered patrons
@@ -116,11 +116,10 @@ public:
     bool returnBook(string bookTitle);
 
     /**
-    * If book is not on hold, it is added to the list of available books and removed from unavailable books list
-    * @param
-    * @return true if book was added successfully, false if not
+    * Attempts to check in a book from the drop box. If the book is on hold, it checks out the book for that individual
+    * @return false if there is no book in the drop box, true on all successful other operations
     */
-    bool checkInBooks();
+    bool checkInBook();
 
     /**
     * Loads library data from file

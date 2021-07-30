@@ -20,18 +20,22 @@ Library::Library(const string &name, const string &address, const string &hours)
 Library::~Library() = default;
 
 
-bool Library::addBook(shared_ptr<Book> aBook) {
+bool Library::addBook(shared_ptr<Book> &aBook) {
     bool added = false;
     aBook->setIsAvailable(true);
-    if(books->insert(books->getLength() + 1, aBook)) {
-        bookIndex->add(aBook); // I fbook is added successfully, add it to the search tree.
-        added = true;
+    if(books->add(aBook)) {
+        added = bookIndex->add(aBook); // If book is added successfully, add it to the search tree.
     }
     return added;
 }
 
-bool Library::removeBook(string bookTitle) {
-//#Todo
+bool Library::removeBook(const string& bookTitle) {
+    bool removed = false;
+    shared_ptr<Book> bookToRemove = searchBookTitle(bookTitle);
+    if((bookToRemove != nullptr) && (bookToRemove->getIsAvailable()) && (books->remove(bookToRemove))) { //Checks to see if its null, then if its available, then finally if it is removed
+        removed = bookIndex->remove(bookToRemove);// If book is removed from bag, remove it from the search tree
+    }
+    return removed;
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
@@ -60,12 +64,24 @@ bool Library::returnBook(string bookTitle) {
     }
 }
 
-bool Library::checkInBooks() {
-    //#Todo
-    while(!dropBox->isEmpty()){
-        dropBox->peek()->setIsAvailable();
-    }
-    return false;
+bool Library::checkInBook() {
+    bool returnVal = true;
+    if(dropBox->isEmpty()) {
+        returnVal = false;
+    } else {
+        shared_ptr<Book> aBook = dropBox->peek();
+        returnVal = dropBox->pop();
+
+        if(aBook->isOnHold()) {
+            returnVal = aBook->nextHold();//The next person on hold gets the book
+        } else {
+            aBook->setIsAvailable(true);// Book is now available
+            aBook->setPatron(make_shared<Patron>(nullptr));
+        }
+    } // end of if/else
+
+    return returnVal;
+
 }
 
 void Library::load(string directory) {
