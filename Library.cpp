@@ -129,22 +129,18 @@ void Library::load(string directory) {
         }// end if
     }//end while
 
-/*    while(endOfBookSection == false){
-        shared_ptr<Book> newBook = make_shared<Book>();
-
-    }*/
-
     //load books
-
     shared_ptr<Book> newBook = make_shared<Book>();
 
     while(getline(readFile, line)){
 
         //#TODO adjust scope for newBook
         //shared_ptr<Book> newBook = make_shared<Book>();
+
+        //check if a book section is ended and create new pointer for next book
         if(endOfBookSection){
             newBook = make_shared<Book>();
-            endOfBookSection = false;
+            endOfBookSection = false; //set end of book flag back to false
         }
 
         count++; //increment line count
