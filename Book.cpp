@@ -52,12 +52,7 @@ bool Book::removeAuthor(const shared_ptr<Author> &anAuthor) {
 
 
 vector<shared_ptr<Author>> Book::getAuthors() const {
-/*    vector<shared_ptr<Author>> authorVector;
-    for(int index = 0; index < authors.getLength(); index++){
-        authorVector.push_back(authors.getEntry(index));
-    }//end for
 
-    return authorVector;*/
 }
 
 /**##############################################################################################################
