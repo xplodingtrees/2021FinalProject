@@ -261,7 +261,7 @@ void Library::load(string directory) {
             line = line.substr(2,line.length()); //trim string to just patron name
             //cout << "adding book to drop box:" << line << endl;
             //search bookindex for book, then add by name
-            dropBox->push(); ///change dropbox type to just string for title?
+            //dropBox->push(); ///change dropbox type to just string for title?
         }// end if
     }//end while
     readFile.close();
