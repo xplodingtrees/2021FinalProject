@@ -54,9 +54,8 @@ bool Library::returnBook(string bookTitle) {
     }
 }
 
-bool Library::checkInBook() {
-//#Todo
-    bool Library::checkInBooks() {
+bool Library::checkInBooks() {
+    //#Todo
     while(!dropBox->isEmpty()){
         dropBox->peek()->setIsAvailable();
     }
@@ -64,7 +63,6 @@ bool Library::checkInBook() {
 }
 
 void Library::load(string directory) {
-
     string line;
     int posMarker = 0; //holds a position in file
     int bookCount = 0; //counter used to track book count/index
