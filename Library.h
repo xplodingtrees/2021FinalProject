@@ -8,10 +8,12 @@
 #include "LinkedList.h"
 #include "LinkedStack.h"
 #include "BookComparator.h"
+#include "LinkedBag.h"
 
 #include "fstream"
 #include "filesystem"
 #include "iostream"
+#include "regex"
 
 using namespace std;
 
@@ -20,8 +22,9 @@ private:
 
     shared_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
     shared_ptr<LinkedList<shared_ptr<Patron>>> patrons;
-    shared_ptr<LinkedList<shared_ptr<Book>>> books;
     shared_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
+    shared_ptr<LinkedBag<Author>> authors;
+    shared_ptr<LinkedBag<shared_ptr<Book>>> books;
 
     string name;
     string address;
@@ -36,13 +39,13 @@ public:
     * Adds a book to the book list and index
     * @return list of available books
     */
-    shared_ptr<LinkedList<shared_ptr<Book>>>  availableBooks();
+    vector<shared_ptr<Book>>  availableBooks();
 
     /**
     * Adds a book to the book list and index
     * @return list of checked books
     */
-    shared_ptr<LinkedList<shared_ptr<Book>>> checkedBooks();
+    vector<shared_ptr<Book>> checkedBooks();
 
     /**
     * Adds a book to the book list and index
@@ -51,20 +54,27 @@ public:
     shared_ptr<LinkedList<shared_ptr<Patron>>> registeredPatrons();
 
     /**
-    * Adds a book to the book list and index
+    * Finds a list of books that match the termm's pattern
     * @param searchTerm
     * @return vector of books that match the search term
     */
-    vector<Book> searchBooks(string searchTerm);
+    vector<shared_ptr<Book>> searchBookPattern(const string& searchTerm);
 
+    /**
+    * Finds an exact match to the book
+    * @param searchTerm
+    * @return pointer to the matching book or nullpointer if its not found
+    */
+    shared_ptr<Book> searchBookTitle(const string& searchTerm);
 
     //main methods
     /**
-    * Creates and adds a book to the book list and index
-    * @param aBook
+    * Takes a book and adds it to the library
+    * @pre there should be no patrons on hold for the book when it is added.
+    * @param aBook is the book to be added
     * @return true if book added successfully, false if not
     */
-    bool addBook(Book aBook);
+    bool addBook(shared_ptr<Book> aBook);
 
     /**
     * Removes a book from the list and index

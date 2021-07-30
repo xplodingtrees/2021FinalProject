@@ -13,21 +13,25 @@ Library::Library(const string &name, const string &address, const string &hours)
     patrons = make_shared<LinkedList<shared_ptr<Patron>>>();
     books = make_shared<LinkedList<shared_ptr<Book>>>();
     dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
+    authors = make_shared<LinkedList<Author>>;
 
 }
 
-Library::~Library() {}
+Library::~Library() = default;
 
 
 bool Library::addBook(shared_ptr<Book> aBook) {
-    //#Todo
-    bookIndex->add(aBook);
-
+    bool added = false;
+    aBook->setIsAvailable(true);
+    if(books->insert(books->getLength() + 1, aBook)) {
+        bookIndex->add(aBook); // I fbook is added successfully, add it to the search tree.
+        added = true;
+    }
+    return added;
 }
 
 bool Library::removeBook(string bookTitle) {
-    //#Todo
-    bookIndex->inorderTraverse()
+//#Todo
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
@@ -229,29 +233,26 @@ void Library::setHours(const string &newHours) {
     hours = newHours;
 }
 
-shared_ptr<LinkedList<shared_ptr<Book>>> Library::availableBooks() {
-    shared_ptr<LinkedList<shared_ptr<Book>>> booksAvailable = make_shared<LinkedList<shared_ptr<Book>>>();
-    int newIndex = 0;
-    for(int i = 1; i <= books->getLength(); i++) {
-        shared_ptr<Book> thisBook = books->getEntry(i);
-        if(thisBook->getIsAvailable()) {
-            booksAvailable->insert(newIndex, thisBook);
-            newIndex++;
-        }
-    }
+vector<shared_ptr<Book>> Library::availableBooks() {
+    vector<shared_ptr<Book>> allBooks = books->toVector();
+    vector<shared_ptr<Book>> booksAvailable;
+
+    for(int i = 0; i < allBooks.size(); i++) {
+        if(allBooks[i]->getIsAvailable()) {
+            booksAvailable.push_back(allBooks[i]);// If book is avaqilable, add it to the list
+        } // End iff
+    } // End for
     return booksAvailable;
 }
 
-shared_ptr<LinkedList<shared_ptr<Book>>> Library::checkedBooks() {
-    shared_ptr<LinkedList<shared_ptr<Book>>> booksUnavailable = make_shared<LinkedList<shared_ptr<Book>>>();
-    int newIndex = 0;
-    for(int i = 1; i <= books->getLength(); i++) {
-        shared_ptr<Book> thisBook = books->getEntry(i);
-        if(!thisBook->getIsAvailable()) {
-            booksUnavailable->insert(newIndex, thisBook);
-            newIndex++;
-        }
-    }
+vector<shared_ptr<Book>> Library::checkedBooks() {
+    vector<shared_ptr<Book>> allBooks = books->toVector();
+    vector<shared_ptr<Book>> booksUnavailable;
+    for(int i = 0; i < allBooks.size(); i++) {
+        if(!allBooks[i]->getIsAvailable()) {
+            booksUnavailable.push_back(allBooks[i]); //Adds only unavailable books to the vector
+        } //end if
+    }// end for
     return booksUnavailable;
 }
 
@@ -259,7 +260,30 @@ shared_ptr<LinkedList<shared_ptr<Patron>>> Library::registeredPatrons() {
     return patrons;
 }
 
-vector<Book> Library::searchBooks(string searchTerm) {
-    //#TODO searchbooks
-    return vector<Book>();
+vector<shared_ptr<Book>> Library::searchBookPattern(const string& searchTerm) {
+    vector<shared_ptr<Book>> foundBooks;
+    vector<shared_ptr<Book>> bookVector = books->toVector();
+    string testTitle = searchTerm;
+
+    transform(testTitle.begin(), testTitle.end(), testTitle.begin(), ::toupper);
+    const regex txt_regex(testTitle);
+
+    for(int i = 0; i < bookVector.size(); i++){
+        string movieTitle = bookVector[i]->getTitle();
+        transform(movieTitle.begin(), movieTitle.end(), movieTitle.begin(), ::toupper);
+
+        if(regex_search(movieTitle, txt_regex)) {
+            foundBooks.push_back(bookVector[i]);
+        }
+    }
+
+    return foundBooks;
+}
+
+
+shared_ptr<Book> Library::searchBookTitle(const string& searchTerm) {
+    for (const shared_ptr<Book>& aBook:this->books->toVector())
+        if (aBook->getTitle() == searchTerm)
+            return aBook;
+    return nullptr;
 }
