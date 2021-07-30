@@ -39,9 +39,7 @@ bool Library::removeBook(const string& bookTitle) {
 }
 
 bool Library::addPatron(string name, string address, string phoneNum) {
-    //#Todo
-    patrons->insert();
-    return true;
+    shared_ptr<Patron> newPatron = make_shared<Patron>()
 }
 
 bool Library::checkOutBook(string phoneNum, string bookTitle) {
@@ -55,13 +53,14 @@ bool Library::setHold(string phoneNum, string bookTitle) {
 }
 
 bool Library::returnBook(string bookTitle) {
-    //#Todo
-    for(int index = 0; index < books->getLength(); index++){
-        if(books->getEntry(index)->getTitle() == bookTitle){
-            dropBox->push(books->getEntry(index));
-            break;
-        }
-    }
+   shared_ptr<Book> returnedBook = searchBookTitle(bookTitle);
+   bool returnVal;
+   if(returnedBook == nullptr) {
+       returnVal = false;
+   } else {
+       returnVal = dropBox->push(returnedBook); // Attempts to put the returnBook in dropbox. No need to modify anything else
+   } // The library only needs to modify whats available when the book is restocked.
+   return returnVal;
 }
 
 bool Library::checkInBook() {
@@ -76,7 +75,7 @@ bool Library::checkInBook() {
             returnVal = aBook->nextHold();//The next person on hold gets the book
         } else {
             aBook->setIsAvailable(true);// Book is now available
-            aBook->setPatron(make_shared<Patron>(nullptr));
+            aBook->setPatron(nullptr);
         }
     } // end of if/else
 
@@ -355,5 +354,14 @@ shared_ptr<Book> Library::searchBookTitle(const string& searchTerm) {
     for (const shared_ptr<Book>& aBook:this->books->toVector())
         if (aBook->getTitle() == searchTerm)
             return aBook;
+    return nullptr;
+}
+
+shared_ptr<Patron> Library::searchPatron(const string& phoneNum) {
+    for(int i = 1; i <= patrons->getLength(); i++) {
+        if(patrons->getEntry(i)->getPhoneNum() == phoneNum) {
+            return patrons->getEntry(i);
+        }// end if
+    } // end for
     return nullptr;
 }

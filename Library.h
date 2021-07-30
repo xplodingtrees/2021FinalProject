@@ -23,7 +23,7 @@ private:
     shared_ptr<BinarySearchTree<shared_ptr<Book>>> bookIndex;
     shared_ptr<LinkedList<shared_ptr<Patron>>> patrons;
     shared_ptr<LinkedStack<shared_ptr<Book>>> dropBox;
-    shared_ptr<LinkedBag<Author>> authors;
+    shared_ptr<LinkedBag<shared_ptr<Author>>> authors;
     shared_ptr<LinkedBag<shared_ptr<Book>>> books;
 
     string name;
@@ -66,6 +66,13 @@ public:
     * @return pointer to the matching book or nullpointer if its not found
     */
     shared_ptr<Book> searchBookTitle(const string& searchTerm);
+
+    /**
+   * Finds an exact match to a patron
+   * @param searchTerm
+   * @return pointer to the matching book or nullpointer if its not found
+   */
+    shared_ptr<Patron> searchPatron(const string& phoneNum)
 
     //main methods
     /**
