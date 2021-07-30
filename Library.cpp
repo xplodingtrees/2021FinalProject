@@ -86,7 +86,6 @@ bool Library::checkInBook() {
 
 void Library::load(string directory) {
     string line;
-    int posMarker = 0; //holds a position in file
     int bookCount = 0; //counter used to track book count/index
     int count = 0; //holds line number
     string bookName; //holds current book name
@@ -95,9 +94,14 @@ void Library::load(string directory) {
     //load patrons
     while(getline(readFile, line)){
         count++; //increment line count
-        if (line.find(">") != string::npos){
+        if (line.find('>') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
-            cout << "adding patron:" << line << endl;
+            cout << "adding patron:" << line.substr(0, line.find(',')) << endl;
+            line.erase(0,line.find(',')+1);
+            cout << "adding patron address:" << line.substr(0, line.find(',')) << endl;
+            line.erase(0,line.find(',')+1);
+            cout << "adding patron phone:" << line.substr(0, line.find(',')) << endl;
+            cout << endl;
         }
         if (line.find("Books=") != string::npos){
             break;
@@ -108,7 +112,7 @@ void Library::load(string directory) {
     while(getline(readFile, line)){
         count++; //increment line count
 
-        if (line.find("{") != string::npos){
+        if (line.find('{') != string::npos){
             cout << endl;
             line = line.substr(0,line.length()-1); //trim string to just book name
             cout << "adding book " << bookCount << ":" << line << endl;
@@ -116,50 +120,71 @@ void Library::load(string directory) {
             bookCount++;
             continue;
         }
-        if (line.find("}") != string::npos){
-            //cout << "end of book " << bookCount << endl;
-            posMarker = count;
+
+        //load isbn
+        if (line.find("isbn=") != string::npos){
+            getline(readFile, line);
+            line = line.substr(2,line.length()); //trim string to just book isbn
+            cout << "adding isbn:" << line << ",to book:" << bookName << endl;
             continue;
         }
-        //mark author position
-        if (line.find("authors=") != string::npos){
-            posMarker = count;
+
+        //load date
+        if (line.find("date=") != string::npos){
+            getline(readFile, line);
+            line = line.substr(2,line.length()); //trim string to just book date
+            cout << "adding date:" << line << ",to book:" << bookName << endl;
             continue;
         }
-        //mark status position
+
+        //load publisher
+        if (line.find("publisher=") != string::npos){
+            getline(readFile, line);
+            line = line.substr(2,line.length()); //trim string to just book publisher
+            cout << "adding publisher:" << line << ",to book:" << bookName << endl;
+            continue;
+        }
+
+        //load status
         if (line.find("status=") != string::npos){
-            posMarker = -1;
+            getline(readFile, line);
+            line = line.substr(2,line.length()); //trim string to just book status
+            cout << "adding status:" << line << ",to book:" << bookName << endl;
             continue;
         }
+
+        //load authors
+        if (line.find("authors=") != string::npos){
+            while(true){
+                getline(readFile, line);
+                if(line.find("holds=") != string::npos){
+                    cout << "HOLDS FOUND: " << endl;
+                    break;
+                }
+                line = line.substr(2,line.length()); //trim string to just book author
+                cout << "adding author:" << line << ",to book:" << bookName << endl;
+            }
+        }
+
+        //load holds
         if (line.find("holds=") != string::npos){
-            posMarker = 0;
+            while(true){
+                getline(readFile, line);
+                if(line.find('}') != string::npos){
+                    cout << "END FOUND: " << endl;
+                    break;
+                }
+                line = line.substr(2,line.length()); //trim string to just book author
+                cout << "adding holds:" << line << ",to book:" << bookName << endl;
+            }
             continue;
         }
+
+        //end loop if bin section encountered
         if (line.find("Bin=") != string::npos){
             //end adding patrons
             cout << endl;
             break;
-        }
-        //if in author position, add authors to current book
-        if (count > posMarker && posMarker > 0){
-            //add authors to book
-            line = line.substr(2,line.length()); //trim string to just book name
-            cout << "adding author:" << line << ",to book:" << bookName << endl;
-            continue;
-        }
-        //if in status position, add status to current book
-        if(posMarker == -1){
-            //add status to book
-            line = line.substr(2,line.length()); //trim string to just book name
-            cout << "adding status:" << line << ",to book:" << bookName << endl;
-            continue;
-        }
-        //if in holds position, add holds to current book
-        if(posMarker == 0){
-            //add status to book
-            line = line.substr(2,line.length()); //trim string to just book name
-            cout << "adding hold:" << line << ",to book:" << bookName << endl;
-            continue;
         }
     }
 
@@ -177,8 +202,13 @@ void Library::load(string directory) {
 void Library::save(string directory) {
     //temp test arrays
     string patrons[3] = {"patron1", "patron2", "patron3"};
+    string patronAddresses[3] = {"address1", "address2", "address3"};
+    string patronPhone[3] = {"phone1", "phone2", "phone3"};
     string dropbox[3] = {"book1", "book2"};
     string books[3][2] =  {{"b1author1", "b1author2"}, {"b2author1", "b2author2"}, {"b3author1", "b3author2"}};
+    int isbn[3] = {123, 455, 214};
+    string pubDates[3] = {"11/10", "1331/12", "176/16"};
+    string publishers[3] = {"pub1", "pub2", "pub3"};
 
     string writeFileAddress = directory;
 
@@ -187,19 +217,32 @@ void Library::save(string directory) {
     //populate patrons section
     writeFile << "Patrons=\n";
     for(int index = 0; index < 3; index++){
-        writeFile << "\t" << ">" << patrons[index] << "\n";
+        writeFile << "\t" << ">" << patrons[index] << "," << patronAddresses[index] << "," << patronPhone[index] << "\n";
     }
+
+/*    for(int index = 0; index < patrons->getLength(); index++){
+        writeFile << "\t" << ">" << patrons->getEntry(index)->getName() << "\n";
+        writeFile << "\t" << ">" << patrons->getEntry(index)->getAddress() << "\n";
+        writeFile << "\t" << ">" << patrons->getEntry(index)->getPhoneNum() << "\n";
+    }*/
 
     //populate book section
     writeFile << "Books=\n";
     //cycle through books and add to file
     for(int index = 0; index < 3; index++){
         writeFile << "BOOKNAME" << "{" << "\n";
-        //copy all the book authors
-        writeFile << "\tauthors=" << "\n";
-        for(int index2 = 0; index2 < 2; index2++){
-            writeFile << "\t\t" << books[index][index2] << "\n";
-        }
+
+        //add isbn
+        writeFile << "\tisbn=" << "\n";
+        writeFile << "\t\t" << isbn[index] << "\n";
+
+        //add publish date
+        writeFile << "\tdate=" << "\n";
+        writeFile << "\t\t" << pubDates[index] << "\n";
+
+        //add publisher
+        writeFile << "\tpublisher=" << "\n";
+        writeFile << "\t\t" << publishers[index] << "\n";
 
         //write status
         writeFile << "\tstatus=\n";
@@ -208,6 +251,12 @@ void Library::save(string directory) {
         //else if book checked out
         //else book is in bin
         writeFile << "\t\tavailable\n";
+
+        //copy all the book authors
+        writeFile << "\tauthors=" << "\n";
+        for(int index2 = 0; index2 < 2; index2++){
+            writeFile << "\t\t" << books[index][index2] << "\n";
+        }
 
         //write holds
         writeFile << "\tholds=\n";
@@ -225,8 +274,6 @@ void Library::save(string directory) {
     for(int index = 0; index < 2; index++){
         writeFile << "\t+" << dropbox[index] << endl;
     }
-
-
 
     //check for extension, remove
     cout << "Library data saved to " << directory << endl;
