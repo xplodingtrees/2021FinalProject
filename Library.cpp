@@ -13,7 +13,7 @@ Library::Library(const string &name, const string &address, const string &hours)
     patrons = make_shared<LinkedList<shared_ptr<Patron>>>();
     books = make_shared<LinkedBag<shared_ptr<Book>>>();
     dropBox = make_shared<LinkedStack<shared_ptr<Book>>>();
-    authors = make_shared<LinkedBag<Author>>();
+    authors = make_shared<LinkedBag<shared_ptr<Author>>>();
 
 }
 
@@ -38,21 +38,36 @@ bool Library::removeBook(const string& bookTitle) {
     return removed;
 }
 
-bool Library::addPatron(string name, string address, string phoneNum) {
-    shared_ptr<Patron> newPatron = make_shared<Patron>()
+bool Library::addPatron(const string& name,const string& address,const string& phoneNum) {
+    shared_ptr<Patron> newPatron = make_shared<Patron>(name, address, phoneNum);
+    return patrons->insert(patrons->getLength()+1, newPatron);//Adds the new patron to the list
 }
 
-bool Library::checkOutBook(string phoneNum, string bookTitle) {
-    //#Todo
-    return false;
+bool Library::checkOutBook(const string& phoneNum,const string& bookTitle) {
+    shared_ptr<Patron> aPatron = searchPatron(phoneNum);
+    shared_ptr<Book> aBook = searchBookTitle(bookTitle);
+    if(aBook != nullptr && aPatron != nullptr && aBook->getIsAvailable()) {
+        //If here, both the book and patron exist and have been found and the book is available
+        aBook->setIsAvailable(false);
+        aBook->setPatron(aPatron);
+        return true;
+    } else {
+        return false;//One of the values given was nullptr
+    }
 }
 
-bool Library::setHold(string phoneNum, string bookTitle) {
-    //#Todo
-    return false;
+bool Library::setHold(const string& phoneNum,const string& bookTitle) {
+    shared_ptr<Patron> aPatron = searchPatron(phoneNum);
+    shared_ptr<Book> aBook = searchBookTitle(bookTitle);
+    if(aBook != nullptr && aPatron != nullptr) {
+        //If here, both the book and patron exist and have been found
+        return aBook->addHold(aPatron);
+    } else {
+        return false;//One of the values given was nullptr
+    }
 }
 
-bool Library::returnBook(string bookTitle) {
+bool Library::returnBook(const string& bookTitle) {
    shared_ptr<Book> returnedBook = searchBookTitle(bookTitle);
    bool returnVal;
    if(returnedBook == nullptr) {
