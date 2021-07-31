@@ -208,6 +208,23 @@ void listPatrons(const shared_ptr<Library>& lib){
     cout << string(60, '-')  << endl;
 }
 
+void placeBookInDropBox(const shared_ptr<Library>& lib, string title){
+    if(lib->returnBook(title)){
+        cout << title << " has been placed in the drop box.";
+    }
+    else{
+        cout << title << " could not be placed in the drop box.";
+    }
+}
+void checkInBooks(const shared_ptr<Library>& lib){
+
+    if(lib->checkInBook()){
+        cout << "All books in the drop box have been checked in.";
+    }
+    else{
+        cout << "There was a problem checking in books from the drop box.";
+    }
+}
 int main(){
     shared_ptr<Library> library = make_shared<Library>("Cool Library", "123 Sesame Street", "12 AM - 12:15 AM Mondays");
     string directory; //stores the data directory
@@ -260,12 +277,19 @@ int main(){
                 listPatrons(library);
                 break;
             case 8: // check out book
+
                 break;
             case 9: // place hold on book
                 break;
             case 10: // place book in drop box
+                cout << endl << "Enter dropped off book name: ";
+                cin.ignore();
+                getline(cin, title);
+                placeBookInDropBox(library, title);
                 break;
             case 11: // check in books from drop box
+                cout << endl << "Checking in books from the drop box... ";
+                checkInBooks(library);
                 break;
             case 20: // load data
                 cout << "Enter the absolute library data file path to load from (do not include filename):";
