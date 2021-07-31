@@ -99,7 +99,6 @@ bool Library::checkInBook() {
 
 void Library::load(const string& directory) {
     string line;
-    //int bookCount = 0; //counter used to track book count/index
     int count = 0; //holds line number
     string bookName; //holds current book name
     fstream readFile(directory); //read file
@@ -112,13 +111,10 @@ void Library::load(const string& directory) {
         count++; //increment line count
         if (line.find('>') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
-            //cout << "adding patron:" << line.substr(0, line.find(',')) << endl;
             newPatron->setName(line.substr(0, line.find(',')));
             line.erase(0,line.find(',')+1); //remove first section delimited in string
-            //cout << "adding patron address:" << line.substr(0, line.find(',')) << endl;
             newPatron->setAddress(line.substr(0, line.find(',')));
             line.erase(0,line.find(',')+1); //remove second section delimited in string
-            //cout << "adding patron phone:" << line.substr(0, line.find(',')) << endl;
             newPatron->setPhoneNum(line.substr(0, line.find(',')));
             cout << endl;
             patrons->insert(insertPoint, newPatron);
@@ -133,7 +129,6 @@ void Library::load(const string& directory) {
     shared_ptr<Book> newBook = make_shared<Book>();
 
     while(getline(readFile, line)){
-        //#TODO newBook scope may be issue
         //shared_ptr<Book> newBook = make_shared<Book>();
 
         //check if a book section is ended and create new pointer for next book
@@ -147,11 +142,9 @@ void Library::load(const string& directory) {
         if (line.find('{') != string::npos){
             cout << endl;
             line = line.substr(0,line.length()-1); //trim string to just book name
-            //cout << "adding book " << bookCount << ":" << line << endl;
             newBook->setTitle(line);
             bookIndex->add(newBook); //add the book to index
             books->add(newBook); //add to book list
-            //bookCount++;
             continue;
         }// end if
 
@@ -159,8 +152,7 @@ void Library::load(const string& directory) {
         if (line.find("isbn=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book isbn
-            //cout << "adding isbn:" << line << ",to book:" << bookName << endl;
-            newBook->setIsbn(stoi(line));
+            newBook->setIsbn(stoi(line)); //set book isbn
             continue;
         }// end if
 
@@ -168,8 +160,7 @@ void Library::load(const string& directory) {
         if (line.find("date=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book date
-            //cout << "adding date:" << line << ",to book:" << bookName << endl;
-            newBook->setPubDate(line);
+            newBook->setPubDate(line); //set book pubdate
             continue;
         }// end if
 
@@ -177,7 +168,6 @@ void Library::load(const string& directory) {
         if (line.find("publisher=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book publisher
-            //cout << "adding publisher:" << line << ",to book:" << bookName << endl;
             newBook->setPublisher(line);
             continue;
         }// end if
@@ -187,29 +177,15 @@ void Library::load(const string& directory) {
         if (line.find("status=") != string::npos){
             getline(readFile, line);
             line = line.substr(2,line.length()); //trim string to just book status
-            //cout << "adding status:" << line << ",to book:" << bookName << endl;
             if(line == "1"){
                 newBook->setIsAvailable(true);
-
             }
             else{
                 newBook->setIsAvailable(true);
                 line.erase(0,line.find(',')+1); //remove first section delimited in string
-                //cout << "adding current patron:" << line << ",to book:" << bookName << endl;
 
                 //search patron and add to book
                 newBook->setPatron(searchPatron(line));
-
-/*                //cycle through patron list and find the match, then set the book to found patron
-                for(int i=0; i<patrons->getLength(); i++){
-                    if(patrons->getEntry(i)->getPhoneNum() == line){
-                        //cout << "patron " << patrons->getEntry(i)->getName() << " added to book" << endl;
-                        newBook->setPatron(patrons->getEntry(i));
-                        break; //break for loop once book patron found and set
-                    }//end if
-                }//end for
-*/
-
             }//end if
             continue;
         }// end if

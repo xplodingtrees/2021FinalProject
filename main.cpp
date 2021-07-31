@@ -218,6 +218,7 @@ void placeBookInDropBox(const shared_ptr<Library>& lib, const string& title){
 }
 
 void checkInBooks(const shared_ptr<Library>& lib){
+    //#TODO
     if(lib->checkInBook()){
         cout << "All books in the drop box have been checked in.";
     }
@@ -228,7 +229,7 @@ void checkInBooks(const shared_ptr<Library>& lib){
 
 void checkOutBook(const shared_ptr<Library>& lib, const string& title, const string& phoneNum){
     if(lib->checkOutBook(phoneNum, title)){
-        cout << title << " has been successfully checked out to " << phoneNum << endl;
+        cout << title << " has been successfully checked out to " << lib->searchPatron(phoneNum)->getName() << endl;
     }
     else{
         cout << title << " could not be checked out." << endl;
@@ -237,7 +238,7 @@ void checkOutBook(const shared_ptr<Library>& lib, const string& title, const str
 
 void placeBookOnHold(const shared_ptr<Library>& lib, const string& title, const string& phoneNum){
     if(lib->setHold(phoneNum, title)){
-        cout << title << " has been successfully placed on hold for " << phoneNum << endl;
+        cout << title << " has been successfully placed on hold for " << lib->searchPatron(phoneNum)->getName() << endl;
     }
     else{
         cout << title << " could not be placed on hold." << endl;
@@ -320,7 +321,7 @@ int main(){
                 placeBookInDropBox(library, title);
                 break;
             case 11: // check in books from drop box
-                cout << endl << "Checking in books from the drop box... ";
+                cout << endl << "Checking in books from the drop box... " << endl;
                 checkInBooks(library);
                 break;
             case 20: // load data
