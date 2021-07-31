@@ -97,7 +97,7 @@ bool Library::checkInBook() {
 
 }
 
-void Library::load(string directory) {
+void Library::load(const string& directory) {
     string line;
     //int bookCount = 0; //counter used to track book count/index
     int count = 0; //holds line number
@@ -273,10 +273,16 @@ void Library::load(string directory) {
     readFile.close();
 }
 
-void Library::save(string directory) {
+void Library::save(const string& directory) {
 
     ofstream writeFile(directory); //instantiate the output file stream object
-    vector<shared_ptr<Book>> bookVector = books->toVector();
+    vector<shared_ptr<Book>> bookVector; //vector stores books in library
+
+    //check if books empty before adding to vector
+    if(books->getCurrentSize() > 0){
+        bookVector = books->toVector(); //load book vector
+    }
+
     shared_ptr<LinkedStack<shared_ptr<Book>>> dropBoxCopy = dropBox; //make a copy of drop box, save shouldn't pop actual
 
     //populate patrons section
@@ -432,9 +438,10 @@ vector<shared_ptr<Book>> Library::searchBookPattern(const string& searchTerm) {
 
 
 shared_ptr<Book> Library::searchBookTitle(const string& searchTerm) {
-    for (const shared_ptr<Book>& aBook:this->books->toVector())
+    for (const shared_ptr<Book>& aBook:this->books->toVector()){
         if (aBook->getTitle() == searchTerm)
             return aBook;
+    }
     return nullptr;
 }
 

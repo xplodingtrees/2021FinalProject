@@ -140,13 +140,13 @@ public:
     * Loads library data from file
     * @param fileName
     */
-    void load(string directory);
+    void load(const string& directory);
 
     /**
     * Saves library data to file
     * @param fileName
     */
-    void save(string directory);
+    void save(const string& directory);
 
     /**
     * Creates and returns a new author

@@ -131,6 +131,15 @@ void removeBook(const shared_ptr<Library>& lib, const string& title){
         cout << title << " could not be removed from the library." << endl;
 }
 
+void addPatron(const shared_ptr<Library>& lib, const string& name, const string& address, const string& phoneNum){
+    if (lib->addPatron(name, address, phoneNum)){
+        cout << "Patron: " << name << " has been added to the library." << endl;
+    }
+    else{
+        cout << "There was a problem adding this patron to the library." << endl;
+    }
+}
+
 int main(){
     shared_ptr<Library> library = make_shared<Library>("Cool Library", "123 Sesame Street", "12 AM - 12:15 AM Mondays");
     string directory; //stores the data directory
