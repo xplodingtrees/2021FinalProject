@@ -464,15 +464,14 @@ shared_ptr<Author> Library::searchAuthor(const string& name) {
 
 shared_ptr<Author> Library::createAuthor(const string& name){
     //check if author exists, if true return existing, else create and return new author
-    shared_ptr<Author> newAuthor = make_shared<Author>();
-    newAuthor = searchAuthor(name);
+    shared_ptr<Author> returnAuthor;
+    returnAuthor = searchAuthor(name);
 
-    if(newAuthor == nullptr){
-        newAuthor->setName(name);
-        return newAuthor;
+    if(returnAuthor == nullptr){
+        returnAuthor = make_shared<Author>(name);
     }
-    else{
-        return newAuthor;
-    }
+
+    return returnAuthor;
+
 
 }

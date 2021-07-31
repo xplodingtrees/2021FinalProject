@@ -90,19 +90,19 @@ bool addBook(shared_ptr<Library> &libPtr) {
         return false;
     }
     cout << "\n Enter ISBN: ";
-    cin >> isbn;
+    cin >> isbn; //#Todo Scrub for integer only
     cout << "\n Enter publication date: ";
     cin >> pubDate;
     cout << "\n Enter publisher: ";
     cin >> publisher;
     cout << "\n Enter page count: ";
-    cin >> pageCount;
+    cin >> pageCount;//#Todo Scrub for integer only
     shared_ptr<Book> aBook = make_shared<Book>(title, isbn, pubDate, publisher, pageCount);
 
     bool done = false;
     shared_ptr<Author> anAuthor;
     while(!done) {
-        cout << "\n Please enter an author or 99 to finish";
+        cout << "\n Please enter an author or 99 to finish: ";
         cin >> author;
         if(author == "99") {
             done = true;
