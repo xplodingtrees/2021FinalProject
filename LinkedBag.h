@@ -10,12 +10,12 @@ template<class ItemType>
 class LinkedBag : public BagInterface<ItemType>
 {
 private:
-   Node<ItemType>* headPtr; // Pointer to first node
+   shared_ptr<Node<ItemType>> headPtr; // Pointer to first node
    int itemCount;           // Current count of bag items
    
    // Returns either a pointer to the node containing a given entry
    // or the null pointer if the entry is not in the bag.
-   Node<ItemType>* getPointerTo(const ItemType& target) const;
+   shared_ptr<Node<ItemType>> getPointerTo(const ItemType& target) const;
    
 public:
    LinkedBag();
