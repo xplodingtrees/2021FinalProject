@@ -7,7 +7,7 @@
 template <class ItemType>
 class LinkedStack : public StackInterface<ItemType>{
 private:
-    Node<ItemType> *topPtr; //pointer to first node in the chain; this node contains the stack top
+    shared_ptr<Node<ItemType>> topPtr; //pointer to first node in the chain; this node contains the stack top
 
 public:
     //Constructors and destructor:
