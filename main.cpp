@@ -91,8 +91,9 @@ void removeBook(const shared_ptr<Library>& lib, const string& title){
 
 int main(){
     shared_ptr<Library> library = make_shared<Library>();
-    string directory;
-    //directory = "C:\\Users\\ocelo\\Desktop\\Library";
+    string directory; //stores the data directory
+    string title; //stores a book title
+
     int option = 0;
 
     while (option>=0){
@@ -106,7 +107,6 @@ int main(){
             case 3: // list checked out books
                 break;
             case 4: // remove book by title
-                string title;
                 cout << "Enter title of the book to remove:" << endl;
                 cin >> title;
                 removeBook(library, title);
