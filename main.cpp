@@ -132,7 +132,7 @@ void removeBook(const shared_ptr<Library>& lib, const string& title){
 }
 
 int main(){
-    shared_ptr<Library> library = make_shared<Library>();
+    shared_ptr<Library> library = make_shared<Library>("Cool Library", "123 Sesame Street", "12 AM - 12:15 AM Mondays");
     string directory; //stores the data directory
     string title; //stores a book title
 
