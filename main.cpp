@@ -35,7 +35,7 @@ int printMenu(){
     cout << "      99) Quit." << endl;
     cout << string(60, '=')  << endl;
 
-    while ((!(option >= 1 && option <= 11) || option == 21 || option == 20 || option == 99)){
+    while ((!(option >= 1 && option <= 11) || option == 21 || option == 20)){
         cout << "      Enter your option [1-11 / 20 / 21 / 99]:";
         cin >> option;
         if (option == 99)
@@ -230,7 +230,6 @@ int main(){
             case 11: // check in books from drop box
                 break;
             case 20: // load data
-                cout << "Enter the absolute library data file path to load from (do not include filename):";
                 cout << "Enter the absolute library data file path to load from (do not include filename):";
                 cin >> directory;
                 cout << endl;
