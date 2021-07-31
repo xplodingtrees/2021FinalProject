@@ -148,6 +148,8 @@ public:
     */
     void save(string directory);
 
+    shared_ptr<Author> createAuthor(const string& name);
+
     //setters/getters
     string getName() const;
     string getAddress() const;
