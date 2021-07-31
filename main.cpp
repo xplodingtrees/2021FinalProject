@@ -176,12 +176,14 @@ void searchForBook(shared_ptr<Library>& lib, const string& title) {
     cout << endl << "#####################################################################" << endl;
     cout << endl << "####################      SEARCHING BOOKS      ######################" << endl << endl;
 
-    shared_ptr<Book> aBook = lib->searchBookTitle(title);
+    vector<shared_ptr<Book>> matchingBooks = lib->searchBookPattern(title);
 
-    if(aBook == nullptr) {
-        cout << "Book not found." << endl;
-    } else {
-        cout << *aBook;
+    if(matchingBooks.size() == 0) {
+        cout << "No Matching books found." << endl;
+    }
+
+    for(shared_ptr<Book> aBook: matchingBooks) {
+        cout << *aBook << endl << endl << endl;
     }
 }
 
@@ -246,11 +248,12 @@ int main(){
             case 6: // add patron
                 cout << endl << "Creating a new patron:\n";
                 cout << "Enter name:";
-                cin >> patronName;
+                cin.ignore();
+                getline(cin, patronName);
                 cout << "\nEnter address:";
-                cin >> patronAddress;
+                getline(cin, patronAddress);
                 cout << "\nEnter phone number:";
-                cin >> patronNum;
+                getline(cin, patronNum);
                 addPatron(library, patronName, patronAddress, patronNum);
                 break;
             case 7: // list patrons

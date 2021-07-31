@@ -438,7 +438,6 @@ vector<shared_ptr<Book>> Library::searchBookPattern(const string& searchTerm) {
 
 
 shared_ptr<Book> Library::searchBookTitle(const string& searchTerm) {
-    //#Todo titles's can't have spaces atm
     for (const shared_ptr<Book>& aBook:this->books->toVector()){
         if (aBook->getTitle() == searchTerm)
             return aBook;

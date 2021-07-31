@@ -125,23 +125,20 @@ void Book::setPatron(const shared_ptr<Patron> &aPatron) {
  * */
 
 ostream& operator<<(ostream& out, const Book &book) {
-    out << "Title: " << book.getTitle() << "\n";
+    out << "Title: " << book.getTitle() << endl;
 
     vector<shared_ptr<Author>> authList = book.getAuthors();
-    for(int i = 0; i << authList.size(); i++) {
-        out << authList[i]->getName() << "\n";
+    if(authList.size() > 0) {
+        cout << "Author: " << authList[0]->getName() << endl;
+    } else {
+        cout << "No Author Found" << endl;
     }
-
-    out << "ISBN: " << book.getIsbn() << "\n";
-    out << "Publication Date: " << book.getPubDate() << "\n";
-    out << "Publisher: " << book.getPublisher() << "\n";
-    out << "Page Count: " << book.getPages() << "\n";
 
     out << "Checked out by: ";
 
     if(book.getIsAvailable())
     {
-        out << "No one \n";
+        out << "Book is available \n";
     } else {
         out << book.getPatron()->getName() << "\n";
     }
