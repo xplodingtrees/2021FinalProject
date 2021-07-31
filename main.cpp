@@ -35,7 +35,7 @@ int printMenu(){
     cout << "      99) Quit." << endl;
     cout << string(60, '=')  << endl;
 
-    while (option < 1 || option >4){
+    while ((!(option >= 1 && option <= 11) || option == 21 || option == 20 || option == 99)){
         cout << "      Enter your option [1-11 / 20 / 21 / 99]:";
         cin >> option;
         if (option == 99)
@@ -124,11 +124,32 @@ void listAvailableBooks(const shared_ptr<Library> lib){
     }
 }
 
+void listUnavailableBooks(const shared_ptr<Library> lib){
+    vector<shared_ptr<Book>> unavailableBooks = lib->checkedBooks();
+
+    for(int index = 0; index < unavailableBooks.size(); index++){
+        cout << unavailableBooks.at(index)->getTitle() << endl;
+    }
+}
+
 void removeBook(const shared_ptr<Library>& lib, const string& title){
     if(lib->removeBook(title))
         cout << title << " has been removed from the library." << endl;
     else
         cout << title << " could not be removed from the library." << endl;
+}
+
+void searchForBook(shared_ptr<Library>& lib, const string& title) {
+    cout << endl << "#####################################################################" << endl;
+    cout << endl << "####################      SEARCHING BOOKS      ######################" << endl << endl;
+
+    shared_ptr<Book> aBook = lib->searchBookTitle(title);
+
+    if(aBook == nullptr) {
+        cout << "Book not found." << endl;
+    } else {
+        cout << *aBook;
+    }
 }
 
 void addPatron(const shared_ptr<Library>& lib, const string& name, const string& address, const string& phoneNum){
@@ -157,17 +178,23 @@ int main(){
                 addBook(library);
                 break;
             case 2: // list available books
-                cout << endl << "Available books:" << endl;
+                cout << endl << "Available books: " << endl;
                 listAvailableBooks(library);
                 break;
             case 3: // list checked out books
+                cout << endl << "Unavailable books: " << endl;
+                listUnavailableBooks(library);
                 break;
             case 4: // remove book by title
-                cout << endl << "Enter title of the book to remove:" << endl;
+                cout << endl << "Enter title of the book to remove: ";
                 cin >> title;
                 removeBook(library, title);
                 break;
             case 5: // search book
+                cout << endl << "Enter book name by title: ";
+                cin >> title;
+                cout << endl;
+                searchForBook(library, title);
                 break;
             case 6: // add patron
                 cout << endl << "Creating a new patron:\n";
