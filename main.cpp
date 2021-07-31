@@ -208,7 +208,7 @@ void listPatrons(const shared_ptr<Library>& lib){
     cout << string(60, '-')  << endl;
 }
 
-void placeBookInDropBox(const shared_ptr<Library>& lib, string title){
+void placeBookInDropBox(const shared_ptr<Library>& lib, const string& title){
     if(lib->returnBook(title)){
         cout << title << " has been placed in the drop box.";
     }
@@ -216,8 +216,8 @@ void placeBookInDropBox(const shared_ptr<Library>& lib, string title){
         cout << title << " could not be placed in the drop box.";
     }
 }
-void checkInBooks(const shared_ptr<Library>& lib){
 
+void checkInBooks(const shared_ptr<Library>& lib){
     if(lib->checkInBook()){
         cout << "All books in the drop box have been checked in.";
     }
@@ -225,6 +225,25 @@ void checkInBooks(const shared_ptr<Library>& lib){
         cout << "There was a problem checking in books from the drop box.";
     }
 }
+
+void checkOutBook(const shared_ptr<Library>& lib, const string& title, const string& phoneNum){
+    if(lib->checkOutBook(phoneNum, title)){
+        cout << title << " has been successfully checked out to " << phoneNum << endl;
+    }
+    else{
+        cout << title << " could not be checked out." << endl;
+    }
+}
+
+void placeBookOnHold(const shared_ptr<Library>& lib, const string& title, const string& phoneNum){
+    if(lib->setHold(phoneNum, title)){
+        cout << title << " has been successfully placed on hold for " << phoneNum << endl;
+    }
+    else{
+        cout << title << " could not be placed on hold." << endl;
+    }
+}
+
 int main(){
     shared_ptr<Library> library = make_shared<Library>("Cool Library", "123 Sesame Street", "12 AM - 12:15 AM Mondays");
     string directory; //stores the data directory
@@ -277,9 +296,22 @@ int main(){
                 listPatrons(library);
                 break;
             case 8: // check out book
-
+                cout << endl << "Checking out a book...\n";
+                cout << "Enter book title:";
+                cin.ignore();
+                getline(cin, title);
+                cout << "Enter patron phone number:";
+                getline(cin, patronNum);
+                checkOutBook(library, title, patronNum);
                 break;
             case 9: // place hold on book
+                cout << "Placing hold on book..." << endl;
+                cout << "Enter book title:";
+                cin.ignore();
+                getline(cin, title);
+                cout << "Enter patron phone number:";
+                getline(cin, patronNum);
+                placeBookOnHold(library, title, patronNum);
                 break;
             case 10: // place book in drop box
                 cout << endl << "Enter dropped off book name: ";
