@@ -5,7 +5,7 @@ LinkedStack<ItemType>::LinkedStack() : topPtr(nullptr){}
 
 template<class ItemType>
 LinkedStack<ItemType>::LinkedStack(const LinkedStack<ItemType> &aStack) {
-    Node<ItemType>* origChainPtr = aStack.topPtr; //Point to nodes in original chain
+    shared_ptr<Node<ItemType>> origChainPtr = aStack.topPtr; //Point to nodes in original chain
 
     if (origChainPtr == nullptr) //check if empty
         topPtr = nullptr; //original stack is empty
@@ -20,7 +20,7 @@ LinkedStack<ItemType>::LinkedStack(const LinkedStack<ItemType> &aStack) {
 
         while(origChainPtr != nullptr){ //copy remaining nodes
             ItemType nextItem = origChainPtr->getItem(); //get next item from original chain
-            Node<ItemType>* newNodePtr = new Node<ItemType>(nextItem); //create a new node containing the next item
+            shared_ptr<Node<ItemType>> newNodePtr = new Node<ItemType>(nextItem); //create a new node containing the next item
             newChainPtr->setNext(newNodePtr); //link new node to end of new chain
             newChainPtr = newChainPtr->getNext(); //advance pointer to new last node
             origChainPtr = origChainPtr->getNext(); //advance original chain pointer
@@ -43,7 +43,7 @@ bool LinkedStack<ItemType>::isEmpty() const {
 
 template<class ItemType>
 bool LinkedStack<ItemType>::push(const ItemType &newEntry) {
-    Node<ItemType>* newNodePtr = new Node<ItemType>(newEntry, topPtr); //create new node with entry, set to top
+    shared_ptr<Node<ItemType>> newNodePtr = new Node<ItemType>(newEntry, topPtr); //create new node with entry, set to top
     topPtr = newNodePtr; //set top pointer in stack to newly created node
     newNodePtr = nullptr; //set pointer to null to be safe
 
@@ -54,7 +54,7 @@ template<class ItemType>
 bool LinkedStack<ItemType>::pop() {
     if(!isEmpty()){ //validate not empty
         //stack is not empty, delete top
-        Node<ItemType>* nodeToDeletePtr = topPtr; //set top as node to delete
+        shared_ptr<Node<ItemType>> nodeToDeletePtr = topPtr; //set top as node to delete
         topPtr = topPtr->getNext(); //switch head to next in chain
 
         //return deleted node to system
