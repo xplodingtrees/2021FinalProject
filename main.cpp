@@ -102,12 +102,13 @@ int main(){
             case 1: // add book
                 break;
             case 2: // list available books
+                cout << endl << "Available books:" << endl;
                 listAvailableBooks(library);
                 break;
             case 3: // list checked out books
                 break;
             case 4: // remove book by title
-                cout << "Enter title of the book to remove:" << endl;
+                cout << endl << "Enter title of the book to remove:" << endl;
                 cin >> title;
                 removeBook(library, title);
                 break;
