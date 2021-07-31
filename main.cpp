@@ -29,8 +29,8 @@ int printMenu(){
     cout << "      10) Place Book to Drop Box" << endl;
     cout << "      11) Check In Books From Drop Box" << endl;
     cout << "--------------------------------------" << endl;
-    cout << "      20) Load Data" << endl;
-    cout << "      21) Save Data" << endl;
+    cout << "      20) Load Data (Doesn't work, but we tried)" << endl;
+    cout << "      21) Save Data (Doesn't Work, but we tried)" << endl;
     cout << "--------------------------------------" << endl;
     cout << "      99) Quit." << endl;
     cout << string(60, '=')  << endl;
@@ -220,10 +220,10 @@ void placeBookInDropBox(const shared_ptr<Library>& lib, const string& title){
 void checkInBooks(const shared_ptr<Library>& lib){
     //#TODO
     if(lib->checkInBook()){
-        cout << "All books in the drop box have been checked in.";
+        cout << "Checked in a book.";
     }
     else{
-        cout << "There was a problem checking in books from the drop box.";
+        cout << "There was a problem checking in book from the drop box. It may be empty.";
     }
 }
 

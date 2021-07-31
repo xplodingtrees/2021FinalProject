@@ -69,7 +69,7 @@ bool Library::setHold(const string& phoneNum,const string& bookTitle) {
 bool Library::returnBook(const string& bookTitle) {
    shared_ptr<Book> returnedBook = searchBookTitle(bookTitle);
    bool returnVal;
-   if(returnedBook == nullptr) {
+   if(returnedBook == nullptr || returnedBook->getIsAvailable()) {
        returnVal = false;
    } else {
        returnVal = dropBox->push(returnedBook); // Attempts to put the returnBook in dropbox. No need to modify anything else
@@ -78,7 +78,7 @@ bool Library::returnBook(const string& bookTitle) {
 }
 
 bool Library::checkInBook() {
-    bool returnVal = true;
+    bool returnVal;
     if(dropBox->isEmpty()) {
         returnVal = false;
     } else {
