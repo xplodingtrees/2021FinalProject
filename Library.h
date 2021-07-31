@@ -141,6 +141,11 @@ public:
     */
     void save(string directory);
 
+    /**
+    * Creates and returns a new author
+    * @param name
+    * @return returns Author pointer with new (or pre-existing author)
+    */
     shared_ptr<Author> createAuthor(const string& name);
 
     //setters/getters
