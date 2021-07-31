@@ -74,6 +74,48 @@ string processDirectory(string directory){
     return directory;
 }
 
+bool addBook(shared_ptr<Library> &libPtr) {
+    string title;
+    int isbn;
+    string pubDate;
+    string publisher;
+    int pageCount;
+    string author;
+
+    cout << "Enter Title: ";
+    cin >> title;
+    if(libPtr->searchBookTitle(title) != nullptr) {
+        cout << "\n Book already added. Enter anything to continue.";
+        cin >> title;
+        return false;
+    }
+    cout << "\n Enter ISBN: ";
+    cin >> isbn;
+    cout << "\n Enter publication date: ";
+    cin >> pubDate;
+    cout << "\n Enter publisher: ";
+    cin >> publisher;
+    cout << "\n Enter page count: ";
+    cin >> pageCount;
+    shared_ptr<Book> aBook = make_shared<Book>(title, isbn, pubDate, publisher, pageCount);
+
+    bool done = false;
+    shared_ptr<Author> anAuthor;
+    while(!done) {
+        cout << "\n Please enter an author or 99 to finish";
+        cin >> author;
+        if(author == "99") {
+            done = true;
+        } else {
+            anAuthor = libPtr->createAuthor(author);
+            aBook->addAuthor(anAuthor);
+        }
+    }
+
+    return libPtr->addBook(aBook);
+
+}
+
 int main(){
     shared_ptr<Library> library = make_shared<Library>();
     string directory;
@@ -84,6 +126,7 @@ int main(){
         option = printMenu();
         switch (option) {
             case 1: // add book
+                addBook(library);
                 break;
             case 2: // list available books
                 break;

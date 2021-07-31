@@ -68,10 +68,17 @@ public:
 
     /**
    * Finds an exact match to a patron
-   * @param searchTerm
-   * @return pointer to the matching book or nullpointer if its not found
+   * @param phoneNum
+   * @return pointer to the matching patron or nullpointer if its not found
    */
     shared_ptr<Patron> searchPatron(const string& phoneNum);
+
+    /**
+   * Finds an exact match to an author
+   * @param name of author
+   * @return pointer to the matching author or nullpointer if its not found
+   */
+    shared_ptr<Author> searchAuthor(const string& name);
 
     //main methods
     /**

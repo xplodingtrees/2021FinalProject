@@ -446,3 +446,10 @@ shared_ptr<Patron> Library::searchPatron(const string& phoneNum) {
     } // end for
     return nullptr;
 }
+
+shared_ptr<Author> Library::searchAuthor(const string& name) {
+    for (const shared_ptr<Author>& anAuthor:this->authors->toVector())
+        if (anAuthor->getName() == name)
+            return anAuthor;
+    return nullptr;
+}
