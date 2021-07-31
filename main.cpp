@@ -74,6 +74,21 @@ string processDirectory(string directory){
     return directory;
 }
 
+void listAvailableBooks(const shared_ptr<Library> lib){
+    vector<shared_ptr<Book>> availableBooks = lib->availableBooks();
+
+    for(int index = 0; index < availableBooks.size(); index++){
+        cout << availableBooks.at(index)->getTitle() << endl;
+    }
+}
+
+void removeBook(const shared_ptr<Library>& lib, const string& title){
+    if(lib->removeBook(title))
+        cout << title << " has been removed from the library." << endl;
+    else
+        cout << title << " could not be removed from the library." << endl;
+}
+
 int main(){
     shared_ptr<Library> library = make_shared<Library>();
     string directory;
@@ -86,10 +101,15 @@ int main(){
             case 1: // add book
                 break;
             case 2: // list available books
+                listAvailableBooks(library);
                 break;
             case 3: // list checked out books
                 break;
             case 4: // remove book by title
+                string title;
+                cout << "Enter title of the book to remove:" << endl;
+                cin >> title;
+                removeBook(library, title);
                 break;
             case 5: // search book
                 break;
