@@ -144,6 +144,9 @@ int main(){
     shared_ptr<Library> library = make_shared<Library>("Cool Library", "123 Sesame Street", "12 AM - 12:15 AM Mondays");
     string directory; //stores the data directory
     string title; //stores a book title
+    string patronName; //stores a patron name
+    string patronAddress; //stores a patron address
+    string patronNum; //stores a patron phone number
 
     int option = 0;
 
@@ -167,6 +170,14 @@ int main(){
             case 5: // search book
                 break;
             case 6: // add patron
+                cout << endl << "Creating a new patron:\n";
+                cout << "Enter name:";
+                cin >> patronName;
+                cout << "\nEnter address:";
+                cin >> patronAddress;
+                cout << "\nEnter phone number:";
+                cin >> patronNum;
+                addPatron(library, patronName, patronAddress, patronNum);
                 break;
             case 7: // list patrons
                 break;
