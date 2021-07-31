@@ -133,7 +133,7 @@ void Library::load(string directory) {
     shared_ptr<Book> newBook = make_shared<Book>();
 
     while(getline(readFile, line)){
-        //#TODO adjust scope for newBook
+        //#TODO newBook scope may be issue
         //shared_ptr<Book> newBook = make_shared<Book>();
 
         //check if a book section is ended and create new pointer for next book
