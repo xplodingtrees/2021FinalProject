@@ -132,7 +132,7 @@ void Library::load(const string& directory) {
         //shared_ptr<Book> newBook = make_shared<Book>();
 
         //check if a book section is ended and create new pointer for next book
-        if(endOfBookSection){
+        if(endOfBookSection){ //this should set next pointer for next book in section found
             newBook = make_shared<Book>();
             endOfBookSection = false; //set end of book flag back to false
         }
@@ -172,7 +172,6 @@ void Library::load(const string& directory) {
             continue;
         }// end if
 
-        //#TODO check this is functional
         //load status
         if (line.find("status=") != string::npos){
             getline(readFile, line);
@@ -199,11 +198,8 @@ void Library::load(const string& directory) {
                 }// end if
                 line = line.substr(2,line.length()); //trim string to just book author
                 shared_ptr<Author> newAuthor = make_shared<Author>(line); //create new author
-                //cout << "adding author:" << line << ",to book:" << bookName << endl;
-                //newAuthor->setName(line); //set new author name
                 newBook->addAuthor(newAuthor); //add author to book
                 authors->add(newAuthor); //add author to master author list
-
             }
         }// end if
 
@@ -215,7 +211,6 @@ void Library::load(const string& directory) {
                     break;
                 }
                 line = line.substr(2,line.length()); //trim string to just patron phone
-                //cout << "adding holds:" << line << ",to book:" << bookName << endl;
                 shared_ptr<Patron> patronFound = searchPatron(line); //get patron by phone number and assign to patronFound
                 newBook->addHold(patronFound); //add hold for book using found patron
             }
@@ -225,25 +220,19 @@ void Library::load(const string& directory) {
         //end loop if bin section encountered
         if (line.find("Bin=") != string::npos){
             //end adding holds
-            //cout << endl;
-
             //set end of booksection to true, to create a new pointer for next book
             endOfBookSection = true;
-
-            //shared_ptr<Book> newBook = make_shared<Book>();
             break;
         }// end if
     }//end while
 
-    //#TODO finish drop box load section
     //load drop box
     while(getline(readFile, line)){
         count++; //increment line count
         if (line.find('+') != string::npos){
             line = line.substr(2,line.length()); //trim string to just patron name
-            //cout << "adding book to drop box:" << line << endl;
             //search bookindex for book, then add by name
-            dropBox->push(searchBookTitle(line));
+            dropBox->push(searchBookTitle(line)); //add book to drop box
         }// end if
     }//end while
     readFile.close();
@@ -291,7 +280,6 @@ void Library::save(const string& directory) {
         writeFile << "\t\t" << bookVector.at(index)->getPublisher() << "\n";
 
         //write status
-        //#TODO check patron saves correct
         writeFile << "\tstatus=\n";
         if(bookVector.at(index)->getIsAvailable()){
             writeFile << "\t\t" << to_string(bookVector.at(index)->getIsAvailable()) <<  "\n";
@@ -304,7 +292,6 @@ void Library::save(const string& directory) {
 
 
         //copy all the book authors
-        //#TODO check author section properly implemented once getAuthors is defined
         writeFile << "\tauthors=" << "\n";
         for(int index2 = 0; index2 < bookAuthors.size(); index2++){
             writeFile << "\t\t" << bookAuthors.at(index2)->getName() << "\n";
@@ -313,7 +300,6 @@ void Library::save(const string& directory) {
         //write holds
         writeFile << "\tholds=\n";
 
-        //#TODO finish holds save section
         //check if holds exist
         if(bookVector.at(index)->isOnHold()){ //add patron phone number to hold section
             //grab the patrons on hold for book

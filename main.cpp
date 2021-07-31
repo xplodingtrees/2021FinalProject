@@ -218,9 +218,8 @@ void placeBookInDropBox(const shared_ptr<Library>& lib, const string& title){
 }
 
 void checkInBooks(const shared_ptr<Library>& lib){
-    //#TODO
     if(lib->checkInBook()){
-        cout << "All books in the drop box have been checked in.";
+        cout << "First book from the drop off stack has been checked in.";
     }
     else{
         cout << "There was a problem checking in books from the drop box.";
