@@ -169,7 +169,7 @@ void removeBook(const shared_ptr<Library>& lib, const string& title){
     if(lib->removeBook(title))
         cout << title << " has been removed from the library." << endl;
     else
-        cout << title << " could not be removed from the library." << endl;
+        cout << title << " could not be removed from the library. It probably does not exist." << endl;
 }
 
 void searchForBook(shared_ptr<Library>& lib, const string& title) {
@@ -192,6 +192,18 @@ void addPatron(const shared_ptr<Library>& lib, const string& name, const string&
     else{
         cout << "There was a problem adding this patron to the library." << endl;
     }
+}
+
+void listPatrons(const shared_ptr<Library>& lib){
+    cout << string(60, '-')  << endl;
+    cout << "\n" << lib->registeredPatrons()->getLength() << " patrons are registered in the library" << endl;
+    cout << "\n\nPatron List:\n";
+    for(int index = 1; index <= lib->registeredPatrons()->getLength(); index++){
+        cout << endl << "\t" << "Name: " << lib->registeredPatrons()->getEntry(index)->getName() << endl;
+        cout << "\t" << "Address: " << lib->registeredPatrons()->getEntry(index)->getAddress() << endl;
+        cout << "\t" << "Phone Number: " << lib->registeredPatrons()->getEntry(index)->getPhoneNum() << endl << endl;
+    }
+    cout << string(60, '-')  << endl;
 }
 
 int main(){
@@ -242,6 +254,7 @@ int main(){
                 addPatron(library, patronName, patronAddress, patronNum);
                 break;
             case 7: // list patrons
+                listPatrons(library);
                 break;
             case 8: // check out book
                 break;
