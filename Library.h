@@ -158,5 +158,4 @@ public:
 };
 
 #include "Library.cpp"
-
 #endif //LIBRARY_H
