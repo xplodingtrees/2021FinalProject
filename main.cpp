@@ -218,7 +218,6 @@ void placeBookInDropBox(const shared_ptr<Library>& lib, const string& title){
 }
 
 void checkInBooks(const shared_ptr<Library>& lib){
-    //#TODO
     if(lib->checkInBook()){
         cout << "Checked in a book.";
     }
