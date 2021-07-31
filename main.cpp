@@ -35,7 +35,7 @@ int printMenu(){
     cout << "      99) Quit." << endl;
     cout << string(60, '=')  << endl;
 
-    while ((!(option >= 1 && option <= 11) || option == 21 || option == 20 || option == 99)){
+    while (!((option >= 1 && option <= 11) || option == 21 || option == 20)){
         cout << "      Enter your option [1-11 / 20 / 21 / 99]:";
         cin >> option;
         if (option == 99)
@@ -82,28 +82,61 @@ bool addBook(shared_ptr<Library> &libPtr) {
     int pageCount;
     string author;
 
+    string input;
+
     cout << "Enter Title: ";
-    cin >> title;
+    cin.ignore();
+    if (!getline(cin, input))
+    {
+        cout << "LINE READ ERROR ABORT ABORT";
+    }
+    title = input;
+
     if(libPtr->searchBookTitle(title) != nullptr) {
         cout << "\n Book already added. Enter anything to continue.";
         cin >> title;
         return false;
     }
-    cout << "\n Enter ISBN: ";
-    cin >> isbn; //#Todo Scrub for integer only
+
+    cout << "\n Enter ISBN (integer): ";
+    if (!getline(cin, input))
+    {
+        cout << "LINE READ ERROR ABORT ABORT";
+    }
+    isbn = stoi(input);
+
     cout << "\n Enter publication date: ";
-    cin >> pubDate;
+    if (!getline(cin, input))
+    {
+        cout << "LINE READ ERROR ABORT ABORT";
+    }
+    pubDate = input;
+
     cout << "\n Enter publisher: ";
-    cin >> publisher;
-    cout << "\n Enter page count: ";
-    cin >> pageCount;//#Todo Scrub for integer only
+    if (!getline(cin, input))
+    {
+        cout << "LINE READ ERROR ABORT ABORT";
+    }
+    publisher = input;
+
+    cout << "\n Enter page count (integer): ";
+    if (!getline(cin, input))
+    {
+        cout << "LINE READ ERROR ABORT ABORT";
+    }
+    pageCount = stoi(input);
+
     shared_ptr<Book> aBook = make_shared<Book>(title, isbn, pubDate, publisher, pageCount);
 
     bool done = false;
     shared_ptr<Author> anAuthor;
     while(!done) {
         cout << "\n Please enter an author or 99 to finish: ";
-        cin >> author;
+        if (!getline(cin, input))
+        {
+            cout << "LINE READ ERROR ABORT ABORT";
+        }
+        author = input;
         if(author == "99") {
             done = true;
         } else {
@@ -187,12 +220,14 @@ int main(){
                 break;
             case 4: // remove book by title
                 cout << endl << "Enter title of the book to remove: ";
-                cin >> title;
+                cin.ignore();
+                getline(cin, title);
                 removeBook(library, title);
                 break;
             case 5: // search book
                 cout << endl << "Enter book name by title: ";
-                cin >> title;
+                cin.ignore();
+                getline(cin, title);
                 cout << endl;
                 searchForBook(library, title);
                 break;
