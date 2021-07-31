@@ -169,7 +169,7 @@ void removeBook(const shared_ptr<Library>& lib, const string& title){
     if(lib->removeBook(title))
         cout << title << " has been removed from the library." << endl;
     else
-        cout << title << " could not be removed from the library. It probably does not exist." << endl;
+        cout << title << " could not be removed from the library. It is either unavailable or does not exist." << endl;
 }
 
 void searchForBook(shared_ptr<Library>& lib, const string& title) {
