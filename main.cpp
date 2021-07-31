@@ -231,6 +231,7 @@ int main(){
                 break;
             case 20: // load data
                 cout << "Enter the absolute library data file path to load from (do not include filename):";
+                cout << "Enter the absolute library data file path to load from (do not include filename):";
                 cin >> directory;
                 cout << endl;
                 library->load(processDirectory(directory));
